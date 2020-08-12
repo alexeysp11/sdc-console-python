@@ -1,0 +1,69 @@
+"""
+This function should generate observations but not models, models
+should process observations.
+
+Add acceleration and non-unform motion to this source file. 
+
+Some parts of this file should be written in velocity.py, 
+in this file we just select mode (constant or different velocity, 
+uniform or non-uniform acceleration, uniform or non-uniform motion)
+and edit properties.
+
+We are going to check which approach is more efficient for estimating car's 
+location: with constant process_var (see kf) or adjusted process_var 
+(see kf_const_velocity) in models folder. 
+In general adjusted algorithm estimates position of a car moving with
+constant velocity a little bit more accurate than algorithm with constant 
+process_var does. 
+
+In order to make some conclusions about that we are going to calculate measures 
+of central tendency (mean and median) of an array of error (difference between 
+truth_value and estimated value) for each algorithm.
+And we need to repeat this several times, initialize arrays of means 
+and medians, calculate mean and median again and compare algorithms, 
+so add for cycle. 
+Also I can improve this algorithm to find out if result depend on n_iter and 
+time_sec. 
+"""
+
+
+from .sensor import Sensor as Sensor
+from models.kalman_filter import KalmanFilter as kf 
+from env.velocity import ConstantVelocity as cv
+import numpy as np
+
+
+class GpsKF():
+    def callkf(self, kf=kf, plot=True, dimension=1):
+        sensor = Sensor()
+        
+        # get initial data  
+        init_data = cv.initialize(dimension=dimension)
+        
+        # usually error of GPS receiver is about 50 meters
+        abs_error = 50 
+        
+        # generate observations
+        obs = sensor.measure(init_data, abs_error=abs_error)
+        
+        if dimension == 1: 
+            # initialize an instance of KalmanFilter and estimate
+            kf_1d = kf(obs, error=abs_error)
+            est = kf_1d.estimate()
+            
+            # print out results and plot all
+            self.mean, self.median = sensor.print_out(obs, est, init_data)
+            
+            if plot == True:
+                sensor.plot(obs, est, init_data, dim=dimension, sensor='gps')
+        
+        if dimension == 2: 
+            # initialize an instance of KalmanFilter and estimate
+            kf_2d = kf(obs, error=abs_error)
+            est = kf_2d.estimate()
+            
+            # print out results and plot all
+            self.mean, self.median = sensor.print_out(obs, est, init_data)
+            
+            if plot == True:
+                sensor.plot(obs, est, init_data, dim=dimension, sensor='gps') 

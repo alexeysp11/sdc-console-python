@@ -1,0 +1,5 @@
+DATMO - Detection and tracking of other moving objects. 
+
+Here we consider radar, lidar etc. 
+
+How to process radar and lidar data?
