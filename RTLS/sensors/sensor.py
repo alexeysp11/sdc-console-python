@@ -7,7 +7,6 @@ import numpy as np
 from tabulate import tabulate
 import matplotlib.pyplot as plt
 
-
 class Sensor(): 
     def measure(self, init_data, abs_error):
         # initial data 

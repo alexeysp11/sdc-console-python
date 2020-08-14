@@ -52,7 +52,6 @@ if __name__ == '__main__':
         elif command == 'sdc -info':
             # use a table and wait for command again!
             print('''Information:
-            car2d       | car in 2d space
             rtls        | real time locating system
             gps         | display each algorithm just once (velocity)
             position    | simple 

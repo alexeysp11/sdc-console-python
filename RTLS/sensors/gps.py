@@ -26,12 +26,12 @@ Also I can improve this algorithm to find out if result depend on n_iter and
 time_sec. 
 """
 
-
+import sys 
 from .sensor import Sensor as Sensor
+sys.path.append('../env')
+from velocity import ConstantVelocity as cv
 from models.kalman_filter import KalmanFilter as kf 
-from env.velocity import ConstantVelocity as cv
 import numpy as np
-
 
 class GpsKF():
     def callkf(self, kf=kf, plot=True, dimension=1):

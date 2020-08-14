@@ -12,9 +12,11 @@ NOTE:
 - Add rotating model. 
 """
 
+import sys 
 from .sensor import Sensor as Sensor
+sys.path.append('../../env')
+from rotation import ConstRotation as cr
 from models.kalman_filter import KalmanFilter as kf 
-from env.rotation import ConstRotation as cr
 import numpy as np
 
 
