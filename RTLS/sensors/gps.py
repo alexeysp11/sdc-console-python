@@ -34,11 +34,11 @@ from models.kalman_filter import KalmanFilter as kf
 import numpy as np
 
 class GpsKF():
-    def callkf(self, kf=kf, plot=True, dimension=1):
+    def callkf(self, kf=kf, plot=True, dimension=1, accel=False):
         sensor = Sensor()
         
         # get initial data  
-        init_data = cv.initialize(dimension=dimension)
+        init_data = cv.initialize(dimension=dimension, accel=accel)
         
         # usually error of GPS receiver is about 50 meters
         abs_error = 50 

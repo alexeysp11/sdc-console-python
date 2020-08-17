@@ -4,8 +4,8 @@ Also here I can implement kf for non-moving car by passing velocity that is
 equal to zero.
 """
 
+import acceleration 
 import numpy as np
-
 
 class Velocity: 
     pass
@@ -16,7 +16,7 @@ class ConstantVelocity(Velocity):
         pass
     
     
-    def initialize(dimension=1, mock=True, display=True):
+    def initialize(dimension=1, accel=False, mock=True, display=True):
         if dimension == 1: 
             if mock == True:
                 # mock initial data 
@@ -39,7 +39,7 @@ class ConstantVelocity(Velocity):
                 print(f'Velocity (m/s): {velocity}')
                 print(f'Time (sec): {time_sec}')
             
-            truth_value = ConstantVelocity.count_position(init_pos, velocity, time_sec)
+            truth_value = ConstantVelocity.count_position(init_pos, velocity, accel, time_sec)
             
             return (truth_value, init_guess, time_sec)
         
@@ -49,7 +49,7 @@ class ConstantVelocity(Velocity):
                 init_pos = (163.0, 55.0)
                 init_guess = (152.0, 68.0)
                 velocity = 2.0
-                time_sec = 20
+                time_sec = 60
             else:
                 # input initial data
                 print('INPUT INITIAL DATA')
@@ -85,17 +85,30 @@ class ConstantVelocity(Velocity):
             return (truth_value, init_guess, time_sec)
     
     
-    def count_position(init_pos, velocity, time_sec):
+    def count_position(init_pos, velocity, accel, time_sec):
         # allocate space for truth_value
-        truth_value = np.ones((time_sec, 1))
+        size = (time_sec, 1)
+        truth_value = np.ones(size)
         truth_value[0] = init_pos
+        
+        accel = acceleration.define_accel(size, accel)
+        
+        """
+        if acceleration is not equal to zero, then we need to redefine 
+        velocity because now it is not constant. 
+        
+        Formula: v = at
+        """
         
         # determine truth_value
         for sec in range(1, time_sec): 
-            truth_value[sec] = truth_value[0] + velocity * sec
+            velocity = DifferentVelocity.redefine_velocity(velocity, accel[sec], sec)
+            truth_value[sec] = truth_value[sec-1] + velocity + accel[sec] / 2
         
         return truth_value
 
 
 class DifferentVelocity(Velocity): 
-    pass
+    def redefine_velocity(init_velocity, accel, time):
+        velocity = init_velocity + accel * time
+        return velocity

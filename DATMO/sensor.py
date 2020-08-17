@@ -7,79 +7,13 @@ sensors like lidar and radar always find point of intersection with
 obstacles.
 """
 
+from intersection import Intersection
 import numpy as np
 import math
 import matplotlib.pyplot as plt
 
 
-class Intersection: 
-    def slope(self, P1, P2):
-        # dy/dx
-        # (y2 - y1) / (x2 - x1)
-        slope = (P2[1] - P1[1]) / (P2[0] - P1[0])
-        
-        return slope
-
-
-    def y_intercept(self, P1, slope):
-        # y = mx + b
-        # b = y - mx
-        # b = P1[1] - slope * P1[0]
-        return P1[1] - slope * P1[0]
-
-
-    def line_intersect(self, m1, b1, m2, b2):
-        if m1 == m2:
-            return None
-        # y = mx + b
-        # Set both lines equal to find the intersection point in the x direction
-        # m1 * x + b1 = m2 * x + b2
-        # m1 * x - m2 * x = b2 - b1
-        # x * (m1 - m2) = b2 - b1
-        # x = (b2 - b1) / (m1 - m2)
-        x = (b2 - b1) / (m1 - m2)
-        # Now solve for y -- use either line, because they are equal here
-        # y = mx + b
-        y = m1 * x + b1
-        return [x, y]
-    
-    
-    def find_intersection(self, auto, check_line, env_line):
-        """
-        Take coordinates of lines and find lines intersection point,
-        then check if it is in intervals:
-        I1 = [min(X1,X2), max(X1,X2)]
-        I2 = [min(X3,X4), max(X3,X4)]
-        """
-        
-        A1 = auto
-        A2 = check_line
-        B1 = env_line[0]
-        B2 = env_line[1]
-        
-        print(f'A1 = {A1}, A2 = {A2}, B1 = {B1}, B2 = {B2}')
-        
-        """
-        Slope: (y2 - y1) / (x2 - x1).
-        If x2 - x1 = 0, then equation: x = b
-        """
-        
-        slope_A = self.slope(A1, A2)
-        slope_B = self.slope(B1, B2)
-        y_int_A = self.y_intercept(A1, slope_A)
-        y_int_B = self.y_intercept(B1, slope_B)
-        point = self.line_intersect(slope_A, y_int_A, slope_B, y_int_B)
-        
-        print(f'point: {point}')
-        
-        """
-        Check if point of intersection is in interval.
-        """
-        
-        return point
-
-
-class Sensor(Intersection): 
+class Sensor: 
     def measure(self, init_data): 
         env = init_data[0]
         accuracy = init_data[1]
@@ -112,10 +46,10 @@ class Sensor(Intersection):
                 
                 x_check = distance * math.cos(math.radians(degree)) + auto[0]
                 y_check = distance * math.sin(math.radians(degree)) + auto[1]
-                check_line = [x_check, y_check]
+                check_line = np.array([auto, [x_check, y_check]])
                 
                 # define two points of obstacles array!
-                self.simple_line(env, auto, check_line)
+                self.simple_line(env, check_line)
             
             # plot observations
             
@@ -128,7 +62,7 @@ class Sensor(Intersection):
         return (x, y)
     
     
-    def simple_line(self, env, auto, check_line): 
+    def simple_line(self, env, check_line): 
         """
         Return two points that define one segment of an obstacle
         """
@@ -136,21 +70,22 @@ class Sensor(Intersection):
         for multiline in env: 
             length = len(multiline[:,0])
             dim = len(multiline[0,:])
-            print(length)
             
             points = np.ones((length-1, dim))
             
             for i in range(1, length):
                 start = multiline[i-1]
                 end = multiline[i]
-                line = [start, end]
+                line = np.array([start, end])
 
-                points[i] = self.find_intersection(auto, check_line, line)
+                points[i-1] = Intersection.line_intersection(check_line, line)
+            
+            print(f'points: \n{points}')
+    
     
     def plot(self, init_data): 
         """
         NOTE: 
-        - This method displays coordinates of obstacles awful, 
         - Add animation. 
         """
         
@@ -180,13 +115,14 @@ class Sensor(Intersection):
         plt.title('Map of observations' , fontweight='bold')
         plt.grid()
         """
-        
+        """
         x = []
         y = []
         
         index = count()
         
         ani = FuncAnimation(plt.gcf(), self.animate, interval=1000)
+        """
         
         plt.legend()
         plt.show()

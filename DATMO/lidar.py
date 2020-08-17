@@ -10,7 +10,6 @@ accuracy: 2.5 cm
 distance: 40 m
 """
 
-
 from sensor import Sensor
 from obstacle import Obstacle
 import numpy as np
