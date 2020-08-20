@@ -5,8 +5,8 @@ Info
 def info():
     print('''Information:
     imu         | inertial measurement unit (gps, accelerometer, gyro)
-    gps         | gps (non-constant velocity)
-    position    | gps (constant velocity) 
+    gps         | gps (constant velocity)
+    position    | gps (constant position) 
     accel       | gps (acceleration)
     gyro        | gyroscope (constant rotation)
     gyro dif    | gyroscope (non-constant rotation)

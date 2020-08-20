@@ -35,7 +35,7 @@ class GyroKF():
         sensor = Sensor()
         
         # get initial data
-        init_data = cr.initialize(dim=dim, const_rotation=False)
+        init_data = cr.initialize(dim=dim, const_rotation=const_rotation)
         abs_error = 15
         
         obs = sensor.measure(init_data, abs_error)
