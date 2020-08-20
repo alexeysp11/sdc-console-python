@@ -112,7 +112,8 @@ class Sensor():
             est = est.reshape((len(est), 1))
         
         # round values for printing out a table!
-        obs, est = np.round(obs, 3), np.round(est, 3)
+        obs = np.round(obs, 3)
+        est = np.round(est, 3)
         
         # calculate error of estimations
         error = np.round(truth_value - est, 3)
@@ -141,8 +142,8 @@ class Sensor():
         # for 1D 
         if cols == 1:
             # calculate and print out measures of central tendency
-            median = np.median(abs(error))
-            mean = np.mean(abs(error))
+            median = np.round(np.median(abs(error)))
+            mean = np.round(np.mean(abs(error)))
             print('Measures of central tendency of error:')
             print(f'median = {median}, mean = {mean}')
         

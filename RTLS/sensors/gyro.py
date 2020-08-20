@@ -31,11 +31,11 @@ class GyroKF():
     rotations accordingly to frequency and truth_yaw. 
     """
     
-    def callkf(self, dim=2):
+    def callkf(self, dim=2, const_rotation=True):
         sensor = Sensor()
         
         # get initial data
-        init_data = cr.initialize(dim=dim)
+        init_data = cr.initialize(dim=dim, const_rotation=False)
         abs_error = 15
         
         obs = sensor.measure(init_data, abs_error)

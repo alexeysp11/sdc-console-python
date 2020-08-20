@@ -2,12 +2,15 @@
 Rotation
 """
 
+import numpy as np
+import random
+
 class Rotation:
     pass 
 
 
 class ConstRotation(Rotation): 
-    def initialize(dim=2, mock=True, display=True):
+    def initialize(dim=2, const_rotation=True, mock=True, display=True):
         if dim == 2:
             if mock == True:
                 # mock initial data (in angles)
@@ -42,6 +45,10 @@ class ConstRotation(Rotation):
             # time delay of accelerometer between measurements
             dt = 1 / frequency
             n_yaw = int(time_sec / dt)
+            shape = (time_sec, 1)
+
+            if const_rotation == False: 
+                truth_yaw = DifferentRotation.define_dif_rotation(truth_yaw, shape)
             
             return (truth_yaw, init_yaw, time_sec, n_yaw)
         
@@ -50,4 +57,16 @@ class ConstRotation(Rotation):
 
 
 class DifferentRotation(Rotation):
-    pass 
+    def define_dif_rotation(first_truth_yaw, shape):
+        truth_yaw = np.ones(shape)
+        truth_yaw[0] = first_truth_yaw
+        
+        time_sec = shape[0]
+        
+        start = -1
+        stop = 1
+
+        for i in range(1, time_sec):
+            truth_yaw[i] = truth_yaw[i-1] + random.uniform(start, stop)
+
+        return truth_yaw

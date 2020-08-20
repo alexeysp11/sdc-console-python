@@ -52,6 +52,10 @@ if __name__ == '__main__':
             gyro_1d = GyroKF()
             gyro_1d.callkf(dim=2)
         
+        elif command == 'sdc gyro dif':
+            gyro_1d = GyroKF()
+            gyro_1d.callkf(dim=2, const_rotation=False)
+
         elif command == 'sdc lidar':
             lidar = Lidar()
             lidar.call_lidar()

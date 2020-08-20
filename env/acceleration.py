@@ -1,8 +1,6 @@
 """
 This file will imitate acceleration of a car and send its attributes 
 to the motion file and KF models. 
-
-Here I am going to define an array of non-constant acceleration.
 """
 
 import numpy as np

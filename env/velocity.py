@@ -26,7 +26,7 @@ class ConstantVelocity(Velocity):
                 time_sec = 51
             else:
                 # input initial data 
-                print('INITIAL DATA')
+                print('Initial data'.upper())
                 init_pos = float(input('Truth value: '))
                 init_guess = float(input('Initial guess: '))
                 velocity = float(input('Velocity (m/s): '))
@@ -40,8 +40,6 @@ class ConstantVelocity(Velocity):
                 print(f'Time (sec): {time_sec}')
             
             truth_value = ConstantVelocity.count_position(init_pos, velocity, accel, time_sec)
-            
-            return (truth_value, init_guess, time_sec)
         
         if dimension == 2: 
             if mock == True:
@@ -52,7 +50,7 @@ class ConstantVelocity(Velocity):
                 time_sec = 60
             else:
                 # input initial data
-                print('INPUT INITIAL DATA')
+                print('Input initial data'.upper())
                 truth_value_X = float(input('Truth value X: '))
                 truth_value_Y = float(input('Truth value Y: '))
                 init_guess_X = float(input('Initial guess X: '))
@@ -66,7 +64,7 @@ class ConstantVelocity(Velocity):
             
             if display == True:
                 # print out initial data 
-                print('INITIAL DATA:')
+                print('Initial data'.upper())
                 print(f'Real coordinates[0]: {init_pos}')
                 print(f'Initial coordinates: {init_guess}')
                 print(f'Velocity: {velocity} m/s')
@@ -81,29 +79,38 @@ class ConstantVelocity(Velocity):
             for sec in range(1, time_sec): 
                 truth_value[sec, 0] = truth_value[0, 0] + velocity * sec
                 truth_value[sec, 1] = truth_value[0, 1] + velocity * sec
-            
-            return (truth_value, init_guess, time_sec)
+        
+        return (truth_value, init_guess, time_sec)
     
     
     def count_position(init_pos, velocity, accel, time_sec):
-        # allocate space for truth_value
-        size = (time_sec, 1)
-        truth_value = np.ones(size)
-        truth_value[0] = init_pos
+        if type(init_pos) == float:
+            # allocate space for truth_value
+            size = (time_sec, 1)
+            truth_value = np.ones(size)
+            truth_value[0] = init_pos
+        else:
+            # allocate space for truth_value
+            size = (time_sec, len(init_pos))
+            truth_value = np.ones(size)
+            truth_value[0, 0] = init_pos[0]
+            truth_value[0, 1] = init_pos[1]
         
+        """
+        define_accel takes accel as a bool variable 
+        but returns it as an array of floats.
+        """
         accel = acceleration.define_accel(size, accel)
-        
-        """
-        if acceleration is not equal to zero, then we need to redefine 
-        velocity because now it is not constant. 
-        
-        Formula: v = at
-        """
         
         # determine truth_value
         for sec in range(1, time_sec): 
+            # redefine current velocity with following formula: v = at
             velocity = DifferentVelocity.redefine_velocity(velocity, accel[sec], sec)
+            
+            # if 1D
+            # get current position
             truth_value[sec] = truth_value[sec-1] + velocity + accel[sec] / 2
+            # if 2D
         
         return truth_value
 
