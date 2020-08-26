@@ -8,11 +8,12 @@ class CallFuzzy:
         fc = fuzzy_controller.FuzzyController()
         self = CallFuzzy()
         
-        while(True):
-            print("""Select one of these options:
+        print("""Select one of these options:
             1) Enter distance and get speed once, 
             2) Describe relationship between distance and speed in the graph.
             """)
+
+        while(True):
             command = input('Please, enter 1 or 2: ')
             
             if command == '1':

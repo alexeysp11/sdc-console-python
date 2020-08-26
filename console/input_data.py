@@ -1,8 +1,6 @@
 """
-In this source file I am going to handle exceptions of that how user 
-uses a console. 
-For example, user can print "sdc -info " instead of "sdc -info", and 
-both of these inputs should be identified.
+In this source file I am going to ask user about setting default parameters
+and then call initialize function from velocity module. 
 """
 
 import sys
@@ -11,13 +9,6 @@ from velocity import Velocity
 
 
 def custom_or_default_data(dimension, init_velocity, accel=False):
-    """
-    Here we need to 1) check if user wants to enter data or set them by 
-    default, 2) invoke methods of velocity module.
-    
-    Parameters: position, velocity, accel, time;
-
-    """
     print(f'Dimension: {dimension}D'.upper())
 
     while(True):

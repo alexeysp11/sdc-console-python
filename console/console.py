@@ -24,17 +24,17 @@ if __name__ == '__main__':
         if command == 'sdc -info':
             info.info()
         
-        elif command == ('sdc -h' or 'sdc -help'):
+        elif command == 'sdc -h' or command == 'sdc -help':
             info.help()
         
         elif command == 'sdc gps':
             info.gps()
 
-        elif command == 'sdc gps --v':
-            invoke.gps(mode='v')
-        
         elif command == 'sdc gps --p':
             invoke.gps(mode='p')
+
+        elif command == 'sdc gps --v':
+            invoke.gps(mode='v')
         
         elif command == 'sdc gps --a':
             invoke.gps(mode='a')
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         elif command == 'sdc lidar':
             invoke.lidar()
         
-        elif command == 'sdc nn mnist':
+        elif command == 'sdc nn --mnist':
             invoke.neural_network(mode='mnist')
         
         elif command == 'sdc fuzzy':
