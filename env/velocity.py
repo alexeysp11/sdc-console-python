@@ -7,49 +7,48 @@ equal to zero.
 import acceleration 
 import numpy as np
 
+
 class Velocity: 
-    pass
-
-
-class ConstantVelocity(Velocity): 
     def __init__(self):
         pass
     
     
-    def initialize(dimension=1, accel=False, mock=True, display=True):
+    def initialize(dimension=1, init_velocity=0.0, accel=False, mock=True):
         if dimension == 1: 
             if mock == True:
-                # mock initial data 
                 init_pos = 45.0
                 init_guess = 55.0
-                velocity = 2.0
-                time_sec = 51
+                velocity = init_velocity
+                time_sec = 50
+
+                print(f'Truth value: {init_pos}')
+                print(f'Initial guess: {init_guess}')
+                print(f'Velocity (m/s): {velocity}')
+                print(f'Time (sec): {time_sec}')
+            
             else:
-                # input initial data 
                 print('Initial data'.upper())
                 init_pos = float(input('Truth value: '))
                 init_guess = float(input('Initial guess: '))
                 velocity = float(input('Velocity (m/s): '))
                 time_sec = int(input('Time (sec): ')) + 1
             
-            if display == True:
-                # print out dummy data
-                print(f'Truth value: {init_pos}')
-                print(f'Initial guess: {init_guess}')
-                print(f'Velocity (m/s): {velocity}')
-                print(f'Time (sec): {time_sec}')
-            
-            truth_value = ConstantVelocity.count_position(init_pos, velocity, accel, time_sec)
+            truth_value = Velocity.count_position(init_pos, velocity, accel, time_sec)
         
         if dimension == 2: 
             if mock == True:
-                # mock initial data
                 init_pos = (163.0, 55.0)
                 init_guess = (152.0, 68.0)
-                velocity = 2.0
+                velocity = init_velocity
                 time_sec = 60
+
+                print('Initial data'.upper())
+                print(f'Real coordinates[0]: {init_pos}')
+                print(f'Initial coordinates: {init_guess}')
+                print(f'Velocity: {velocity} m/s')
+                print(f'Time (sec): {time_sec}')
+            
             else:
-                # input initial data
                 print('Input initial data'.upper())
                 truth_value_X = float(input('Truth value X: '))
                 truth_value_Y = float(input('Truth value Y: '))
@@ -59,16 +58,8 @@ class ConstantVelocity(Velocity):
                 time_sec = int(input('Time (sec): '))
                 
                 # convert initial data into arrays 
-                truth_value = (truth_value_X, truth_value_Y)
+                init_pos = (truth_value_X, truth_value_Y)
                 init_guess = (init_guess_X, init_guess_Y)
-            
-            if display == True:
-                # print out initial data 
-                print('Initial data'.upper())
-                print(f'Real coordinates[0]: {init_pos}')
-                print(f'Initial coordinates: {init_guess}')
-                print(f'Velocity: {velocity} m/s')
-                print(f'Time (sec): {time_sec}')
             
             # allocate space for truth_value
             size = (time_sec, len(init_pos))
@@ -97,7 +88,7 @@ class ConstantVelocity(Velocity):
             truth_value[0, 1] = init_pos[1]
         
         """
-        define_accel takes accel as a bool variable 
+        acceleration.define_accel takes accel as a bool variable 
         but returns it as an array of floats.
         """
         accel = acceleration.define_accel(size, accel)

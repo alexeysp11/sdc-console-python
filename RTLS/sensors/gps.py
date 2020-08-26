@@ -28,18 +28,13 @@ time_sec.
 
 import sys 
 from .sensor import Sensor as Sensor
-sys.path.append('../env')
-from velocity import ConstantVelocity as cv
 from models.kalman_filter import KalmanFilter as kf 
 import numpy as np
 
 class GpsKF():
-    def callkf(self, kf=kf, plot=True, dimension=1, accel=False):
+    def callkf(self, kf=kf, plot=True, dimension=1, init_data=0):
         sensor = Sensor()
-        
-        # get initial data  
-        init_data = cv.initialize(dimension=dimension, accel=accel)
-        
+
         # usually error of GPS receiver is about 50 meters
         abs_error = 50 
         

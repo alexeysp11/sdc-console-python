@@ -5,11 +5,8 @@ Info
 def info():
     print('''Information:
     imu         | inertial measurement unit (gps, accelerometer, gyro)
-    gps         | gps (constant velocity)
-    position    | gps (constant position) 
-    accel       | gps (acceleration)
-    gyro        | gyroscope (constant rotation)
-    gyro dif    | gyroscope (non-constant rotation)
+    gps         | gps 
+    gyro        | gyroscope 
     lidar       | lidar
     fuzzy       | fuzzy controller 
     nn mnist    | neural network (mnist)
@@ -18,12 +15,20 @@ def info():
     ''')
 
 
+def help():
+    pass
+
+
 def gps(): 
-    print('''gps module:
-    velocity    | gps (non-constant velocity)
-    position    | gps (constant velocity) 
+    print('''sdc gps:
+    --v     | gps (velocity)
+    --p     | gps (position) 
+    --a     | gps (acceleration)
     ''')
 
 
 def gyro():
-    pass
+    print('''sdc gyro:
+    --c     | gyro (constant)
+    --nu    | gyro (non-uniform) 
+    ''')
