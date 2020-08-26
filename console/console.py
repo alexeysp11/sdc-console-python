@@ -4,6 +4,12 @@ When this app starts, user can enter some commands (for gps,
 gyro, fuzzy controller, computer vision etc). 
 When user writes some command, the program asks him or her 
 if it's okay to use default parameters.
+
+All modules can be called by:
+sdc module --mode
+All information can be called by:
+sdc -info
+sdc -help
 """
 
 import info
@@ -46,10 +52,10 @@ if __name__ == '__main__':
             invoke.lidar()
         
         elif command == 'sdc nn mnist':
-            pass
+            invoke.neural_network(mode='mnist')
         
         elif command == 'sdc fuzzy':
-            pass
+            invoke.fuzzy()
 
         elif command == 'sdc exit':
             break

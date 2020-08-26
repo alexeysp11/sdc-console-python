@@ -6,10 +6,14 @@ Neural Networks and Fuzzy controller.
 import sys
 sys.path.append('../RTLS')
 sys.path.append('../DATMO')
+sys.path.append('../fuzzy_controller')
+sys.path.append('../computer_vision')
 import input_data
 from sensors.gps import GpsKF
 from sensors.gyro import GyroKF
 from lidar import Lidar
+from call_fc import CallFuzzy
+#from mnist. import Lidar
 
 
 def gps(mode):
@@ -45,3 +49,16 @@ def gyro(mode):
 def lidar():
     lidar = Lidar()
     lidar.call_lidar()
+
+
+def neural_network(mode):
+    pass
+
+
+def fuzzy():
+    fc = CallFuzzy()
+    fc.call()
+
+
+def test():
+    pass

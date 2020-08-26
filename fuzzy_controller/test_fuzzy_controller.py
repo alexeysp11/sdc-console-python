@@ -3,7 +3,7 @@
 import unittest
 import fuzzy_logic
 
-class TestFuzzyController(unittest.TestCase):
+class CallFuzzy(unittest.TestCase):
     
     def test_name(self):
         

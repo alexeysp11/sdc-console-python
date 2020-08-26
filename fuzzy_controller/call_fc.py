@@ -1,18 +1,24 @@
-# Fuzzy controller takes dstnce2prev_pt and dstnce2nxt_pt as the input varibles
-# and returns two values of speed as the output variables
-# One of them is defined by dstnce2prev_pt, another one is defined by dstnce2nxt_pt
-# First output variable might be called as speed_prev_pt, the second one as speed_nxt_pt
-
-
-# LIBRARIES
 import fuzzy_controller
 import matplotlib.pyplot as plt
 
 
-# FUZZY CONTROLLER TESTING CLASS
-class TestFuzzyController:
+class CallFuzzy:
+    def call(self):
+        # Declare instances of considered classes
+        fc = fuzzy_controller.FuzzyController()
+        self = CallFuzzy()
+        
+        # If you need to enter distance and get speed, run this function:
+        get_set = self.get_distance_set_speed(fc)
+        print(get_set)
+        
+        """
+        If you need to describe the relationship between distance and speed
+        in the graph, run this fuction: 
+        """
+    ##    self.rel_dstnce_speed(fuzzy_controller)
     
-    # SHOW LINGUISTIC VARIABLES METHOD
+    
     def view_variables(self, fc, entered_distance):
         # show linguistic variables' domain
         # MAKE ALL GRAPHS IN ONE WINDOW! 
@@ -29,7 +35,7 @@ class TestFuzzyController:
         fc.speed.view(sim=self.speed_simulation)
 
 
-    # RELATIONSHIP BETWEEN DISTANCE AND SPEED
+    # Relationship between distance and speed
     def draw_plot(self, speed_axis, distance_axis):
         # plotting the points
         plt.plot(speed_axis, distance_axis)
@@ -45,7 +51,7 @@ class TestFuzzyController:
         plt.show() 
 
 
-    # TRANSFER DISTANCE TO SPEED 
+    # Transfer distance to speed 
     def rel_dstnce_speed(self):
         distance = 0
         max_distance = 100
@@ -70,13 +76,11 @@ class TestFuzzyController:
         draw_plot(array_speed, array_distance)
 
 
-    # WRITE DISTANCE AND GET SPEED 
+    # Write distance and get speed 
     def get_distance_set_speed(self, fc):
         # get a distance 
         distance = input('Distance (m): ')
 
-        # EXCEPTIONS HANDLING
-        # try this 
         try:
             # convert input distance into float number
             distance = float(distance)
@@ -94,22 +98,3 @@ class TestFuzzyController:
             # count a speed with the help of fuzzy controller 
             speed = fc.count_speed(distance)
             return 'Speed = ' + str(speed) + ' km/h'
-
-
-# MAIN FUNCTION 
-def main():
-    # Declare instances of considered classes
-    fc = fuzzy_controller.FuzzyController()
-    fc_test = TestFuzzyController()
-    
-    # If you need to enter distance and get speed, run this function:
-    get_set = fc_test.get_distance_set_speed(fc)
-    print(get_set)
-    
-    # If you need to describe the relationship between distance and speed
-    # in the graph, run this fuction: 
-##    rel_dstnce_speed(fuzzy_controller)
-
-
-if __name__ == '__main__':
-    main()
