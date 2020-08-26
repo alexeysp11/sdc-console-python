@@ -8,17 +8,28 @@ class CallFuzzy:
         fc = fuzzy_controller.FuzzyController()
         self = CallFuzzy()
         
-        # If you need to enter distance and get speed, run this function:
-        get_set = self.get_distance_set_speed(fc)
-        print(get_set)
-        
-        """
-        If you need to describe the relationship between distance and speed
-        in the graph, run this fuction: 
-        """
-    ##    self.rel_dstnce_speed(fuzzy_controller)
-    
-    
+        while(True):
+            print("""Select one of these options:
+            1) Enter distance and get speed once, 
+            2) Describe relationship between distance and speed in the graph.
+            """)
+            command = input('Please, enter 1 or 2: ')
+            
+            if command == '1':
+                # If you need to enter distance and get speed, run this function:
+                get_set = self.get_distance_set_speed(fc)
+                print(get_set)
+                break
+            
+            elif command == '2':
+                """
+                If you need to describe the relationship between distance and speed
+                in the graph, run this fuction: 
+                """
+                self.rel_dstnce_speed(fc)
+                break
+
+
     def view_variables(self, fc, entered_distance):
         # show linguistic variables' domain
         # MAKE ALL GRAPHS IN ONE WINDOW! 
@@ -52,7 +63,7 @@ class CallFuzzy:
 
 
     # Transfer distance to speed 
-    def rel_dstnce_speed(self):
+    def rel_dstnce_speed(self, fuzzy_controller):
         distance = 0
         max_distance = 100
         step = 1.25
@@ -73,7 +84,7 @@ class CallFuzzy:
         i = 0 
         for i in range(number_of_elements + 1):
             print(str(array_distance[i]) + '\t\t' + str(array_speed[i]))
-        draw_plot(array_speed, array_distance)
+        self.draw_plot(array_speed, array_distance)
 
 
     # Write distance and get speed 
