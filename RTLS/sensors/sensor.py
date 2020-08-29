@@ -64,9 +64,6 @@ class Sensor():
             axis, 
             2) one diagram which represents a map with car's 
             trajectory in 2d space. 
-            
-            NOTE: 
-            - This method doesn't display truth_yaw for gyro.
             """
             
             # map 
@@ -161,4 +158,6 @@ class Sensor():
             mean = np.array([[mean_X, mean_Y]])
             median = np.array([[median_X, median_Y]])
         
+        print()
+
         return mean, median

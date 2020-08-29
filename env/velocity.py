@@ -42,14 +42,13 @@ class Velocity:
                 velocity = init_velocity
                 time_sec = 60
 
-                print('Initial data'.upper())
                 print(f'Real coordinates[0]: {init_pos}')
                 print(f'Initial coordinates: {init_guess}')
                 print(f'Velocity: {velocity} m/s')
                 print(f'Time (sec): {time_sec}')
             
             else:
-                print('Input initial data'.upper())
+                print('Initial data'.upper())
                 truth_value_X = float(input('Truth value X: '))
                 truth_value_Y = float(input('Truth value Y: '))
                 init_guess_X = float(input('Initial guess X: '))

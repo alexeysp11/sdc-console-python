@@ -6,10 +6,14 @@ When user writes some command, the program asks him or her
 if it's okay to use default parameters.
 
 All modules can be called by:
-sdc module --mode
+    sdc module --mode
 All information can be called by:
-sdc -info
-sdc -help
+    sdc -info
+    sdc -help
+
+When we call neural network modules, we write default and custom as is because
+in the console it's very difficult to find some difference between commands if
+we write d or c.
 """
 
 import info
@@ -19,43 +23,83 @@ if __name__ == '__main__':
     print('Welcome to SDC console!')
     
     while True:
-        command = input('>> ')
-        
-        if command == 'sdc -info':
-            info.info()
-        
-        elif command == 'sdc -h' or command == 'sdc -help':
-            info.help()
-        
-        elif command == 'sdc gps':
-            info.gps()
+        try:
+            command = input('>> ')
+            
+            # ignore if user just pressed Enter
+            if command == '':
+                pass
+            
+            elif command == 'sdc':
+                info.help()
+                info.commands()
 
-        elif command == 'sdc gps --p':
-            invoke.gps(mode='p')
+            elif command == 'sdc -commands':
+                info.commands()
+            
+            elif command == 'sdc -h' or command == 'sdc -help':
+                info.help()
+            
+            elif command == 'sdc imu':
+                info.imu()
+            
+            elif command == 'sdc imu --p':
+                invoke.imu(mode='p')
 
-        elif command == 'sdc gps --v':
-            invoke.gps(mode='v')
-        
-        elif command == 'sdc gps --a':
-            invoke.gps(mode='a')
-        
-        elif command == 'sdc gyro':
-            info.gyro()
+            elif command == 'sdc imu --v':
+                invoke.imu(mode='v')
+            
+            elif command == 'sdc imu --a':
+                invoke.imu(mode='a')
 
-        elif command == 'sdc gyro --c':
-            invoke.gyro(mode='c')
-        
-        elif command == 'sdc gyro --nu':
-            invoke.gyro(mode='nu')
+            elif command == 'sdc gps':
+                info.gps()
 
-        elif command == 'sdc lidar':
-            invoke.lidar()
-        
-        elif command == 'sdc nn --mnist':
-            invoke.neural_network(mode='mnist')
-        
-        elif command == 'sdc fuzzy':
-            invoke.fuzzy()
+            elif command == 'sdc gps --p':
+                invoke.gps(mode='p')
 
-        elif command == 'sdc exit':
-            break
+            elif command == 'sdc gps --v':
+                invoke.gps(mode='v')
+            
+            elif command == 'sdc gps --a':
+                invoke.gps(mode='a')
+            
+            elif command == 'sdc accel':
+                invoke.accel()
+            
+            elif command == 'sdc gyro':
+                info.gyro()
+
+            elif command == 'sdc gyro --const':
+                invoke.gyro(mode='c')
+            
+            elif command == 'sdc gyro --nu':
+                invoke.gyro(mode='nu')
+
+            elif command == 'sdc lidar':
+                invoke.lidar()
+            
+            elif command == 'sdc nn':
+                info.neural_network()
+
+            elif command == 'sdc nn --mnist default':
+                invoke.neural_network(mode='mnist', default=True)
+            
+            elif command == 'sdc nn --mnist custom':
+                invoke.neural_network(mode='mnist', default=False)
+            
+            elif command == 'sdc nn --signs':
+                invoke.neural_network(mode='signs', default=True)
+            
+            elif command == 'sdc fuzzy':
+                invoke.fuzzy()
+
+            elif command == 'sdc exit':
+                break
+
+            else:
+                print('Incorrect command!')
+        
+        except Exception as e:
+            print('Info for developer:'.upper)
+            print(e)

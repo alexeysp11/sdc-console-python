@@ -27,38 +27,41 @@ time_sec.
 """
 
 import sys 
-from .sensor import Sensor as Sensor
+from .sensor import Sensor 
 from models.kalman_filter import KalmanFilter as kf 
 import numpy as np
 
 class GpsKF():
-    def callkf(self, kf=kf, plot=True, dimension=1, init_data=0):
-        sensor = Sensor()
-
+    def callkf(self, kf=kf, dimension=1, init_data=0):
         # usually error of GPS receiver is about 50 meters
         abs_error = 50 
         
-        # generate observations
-        obs = sensor.measure(init_data, abs_error=abs_error)
-        
-        if dimension == 1: 
-            # initialize an instance of KalmanFilter and estimate
-            kf_1d = kf(obs, error=abs_error)
-            est = kf_1d.estimate()
+        try:
+            sensor = Sensor()
             
-            # print out results and plot all
-            self.mean, self.median = sensor.print_out(obs, est, init_data)
+            # generate observations
+            obs = sensor.measure(init_data, abs_error=abs_error)
             
-            if plot == True:
+            if dimension == 1: 
+                # initialize an instance of KalmanFilter and estimate
+                kf_1d = kf(obs, error=abs_error)
+                est = kf_1d.estimate()
+                
+                # print out results and plot all
+                self.mean, self.median = sensor.print_out(obs, est, init_data)
+                
                 sensor.plot(obs, est, init_data, dim=dimension, sensor='gps')
-        
-        if dimension == 2: 
-            # initialize an instance of KalmanFilter and estimate
-            kf_2d = kf(obs, error=abs_error)
-            est = kf_2d.estimate()
             
-            # print out results and plot all
-            self.mean, self.median = sensor.print_out(obs, est, init_data)
-            
-            if plot == True:
+            if dimension == 2: 
+                # initialize an instance of KalmanFilter and estimate
+                kf_2d = kf(obs, error=abs_error)
+                est = kf_2d.estimate()
+                
+                # print out results and plot all
+                self.mean, self.median = sensor.print_out(obs, est, init_data)
+                
                 sensor.plot(obs, est, init_data, dim=dimension, sensor='gps') 
+        
+        except Exception as e:
+            print('Info for developer'.upper())
+            print(e)

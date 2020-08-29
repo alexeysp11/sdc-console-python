@@ -23,9 +23,18 @@ def custom_or_default_data(dimension, init_velocity, accel=False):
                 mock = False
                 break
             
-        except expression as identifier:
-            pass
-        
-    init_data = Velocity.initialize(dimension=dimension, init_velocity=init_velocity, accel=accel, mock=mock)
-
+        except Exception as e:
+            print('Info for developer'.upper())
+            print(e)
+    
+    try:
+        init_data = Velocity.initialize(dimension=dimension, 
+                                        init_velocity=init_velocity, 
+                                        accel=accel, 
+                                        mock=mock)
+    
+    except Exception as e:
+        print('Info for developer'.upper())
+        print(e)
+    
     return init_data

@@ -13,7 +13,7 @@ NOTE:
 """
 
 import sys 
-from .sensor import Sensor as Sensor
+from .sensor import Sensor 
 sys.path.append('../../env')
 from rotation import ConstRotation as cr
 from models.kalman_filter import KalmanFilter as kf 
@@ -32,32 +32,38 @@ class GyroKF():
     """
     
     def callkf(self, dim=2, const_rotation=True):
-        sensor = Sensor()
-        
-        # get initial data
-        init_data = cr.initialize(dim=dim, const_rotation=const_rotation)
         abs_error = 15
         
-        obs = sensor.measure(init_data, abs_error)
-        
-        if dim == 2:
-            # initialize an instance of KalmanFilter 
-            kf2d = kf(obs, abs_error)
+        try:
+            sensor = Sensor()
+            
+            # get initial data
+            init_data = cr.initialize(dim=dim, const_rotation=const_rotation)
+            
+            obs = sensor.measure(init_data, abs_error)
+            
+            if dim == 2:
+                # initialize an instance of KalmanFilter 
+                kf2d = kf(obs, abs_error)
 
-            # estimate, print out results and plot all  
-            est = kf2d.estimate()
-            mean, median = sensor.print_out(obs, est, init_data)
-            sensor.plot(obs, est, init_data, dim=dim, sensor='gyro')
+                # estimate, print out results and plot all  
+                est = kf2d.estimate()
+                mean, median = sensor.print_out(obs, est, init_data)
+                sensor.plot(obs, est, init_data, dim=dim, sensor='gyro')
+            
+            if dim == 3:
+                # initialize an instance of GyroKF
+                kftest_2d = GyroKF()
+                
+                # get initial data and set it into a tuple 
+                truth_value, init_guess, n_iter = kftest_2d.initdata_2d()
+                kf_2d = kf(truth_value, init_guess, n_iter)
+                
+                # estimate 
+                obs, est = kf_2d.estimate()
+                kftest_2d.print_out(obs, est, kf_2d)
+                kftest_2d.plot_2d(obs, est, kf_2d)
         
-        if dim == 3:
-            # initialize an instance of GyroKF
-            kftest_2d = GyroKF()
-            
-            # get initial data and set it into a tuple 
-            truth_value, init_guess, n_iter = kftest_2d.initdata_2d()
-            kf_2d = kf(truth_value, init_guess, n_iter)
-            
-            # estimate 
-            obs, est = kf_2d.estimate()
-            kftest_2d.print_out(obs, est, kf_2d)
-            kftest_2d.plot_2d(obs, est, kf_2d)
+        except Exception as e:
+            print('Info for developer'.upper())
+            print(e)

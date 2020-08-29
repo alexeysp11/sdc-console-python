@@ -13,12 +13,16 @@ Because in order to process non-uniform motion, we need to combine both
 velocity and acceleration models.
 """
 
-import kf_accelerometer
+import sys
+from models.kf_accelerometer import KalmanFilter
 import numpy as np
 import matplotlib.pyplot as plt
 from tabulate import tabulate
 
-class Accelerartion():
+class Accelerometer():
+    def run():
+        pass
+    
     def initialize(self):
         # input initial data 
         print('INITIAL DATA')
@@ -232,11 +236,11 @@ class Accelerartion():
         plt.show()
 
 
-class UniformAccel(Accelerartion):
+class UniformAccel(Accelerometer):
     pass 
 
 
-class NonUniformAccel(Accelerartion):
+class NonUniformAccel(Accelerometer):
     pass 
 
 
@@ -244,7 +248,7 @@ def main():
     
     # CALL KALMAN FILTER FOR 1D SPACE
     # input initial data
-    kftest_1d = Accelerartion()
+    kftest_1d = Accelerometer()
     
     # get initial data and initialize an instance of KalmanFilter 
     truth_value, init_guess, n_iter = kftest_1d.initdata_1d()
@@ -257,8 +261,8 @@ def main():
     
     
     # CALL KALMAN FILTER FOR 2D SPACE
-    # initialize an instance of Accelerartion
-    kftest_2d = Accelerartion()
+    # initialize an instance of Accelerometer
+    kftest_2d = Accelerometer()
     
     # get initial data and initialize an instance of KalmanFilter 
     truth_value, init_guess, n_iter = kftest_2d.initdata_2d()
