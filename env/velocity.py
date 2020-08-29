@@ -13,7 +13,7 @@ class Velocity:
         pass
     
     
-    def initialize(dimension=1, init_velocity=0.0, accel=False, mock=True):
+    def initialize(dimension=1, init_velocity=0.0, mode='p', accel=False, mock=True):
         if dimension == 1: 
             if mock == True:
                 init_pos = 45.0
@@ -30,7 +30,13 @@ class Velocity:
                 print('Initial data'.upper())
                 init_pos = float(input('Truth value: '))
                 init_guess = float(input('Initial guess: '))
-                velocity = float(input('Velocity (m/s): '))
+                
+                if mode != 'p':
+                    velocity = float(input('Velocity (m/s): '))
+                else: 
+                    velocity = 0.0
+                    print(f'Velocity (m/s): {velocity}')
+                
                 time_sec = int(input('Time (sec): ')) + 1
             
             truth_value = Velocity.count_position(init_pos, velocity, accel, time_sec)
@@ -53,7 +59,13 @@ class Velocity:
                 truth_value_Y = float(input('Truth value Y: '))
                 init_guess_X = float(input('Initial guess X: '))
                 init_guess_Y = float(input('Initial guess Y: '))
-                velocity = float(input('Velocity (m/s): '))
+                
+                if mode != 'p':
+                    velocity = float(input('Velocity (m/s): '))
+                else: 
+                    velocity = 0.0
+                    print(f'Velocity (m/s): {velocity}')
+                
                 time_sec = int(input('Time (sec): '))
                 
                 # convert initial data into arrays 

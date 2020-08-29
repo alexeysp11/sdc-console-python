@@ -27,12 +27,14 @@ def imu(mode):
         imu_1d = ImuKF()
         init_data = input_data.custom_or_default_data(dimension=1, 
                                                       init_velocity=velocity, 
+                                                      mode=mode,
                                                       accel=accel)
         imu_1d.callkf(dimension=1, init_data=init_data)
         
         imu_2d = ImuKF()
         init_data = input_data.custom_or_default_data(dimension=2, 
                                                       init_velocity=velocity, 
+                                                      mode=mode,
                                                       accel=accel)
         imu_2d.callkf(dimension=2, init_data=init_data)
     
@@ -48,12 +50,14 @@ def gps(mode):
         kf_1d = GpsKF()
         init_data = input_data.custom_or_default_data(dimension=1, 
                                                       init_velocity=velocity, 
+                                                      mode=mode,
                                                       accel=accel)
         kf_1d.callkf(dimension=1, init_data=init_data)
         
         kf_2d = GpsKF()
         init_data = input_data.custom_or_default_data(dimension=2, 
                                                       init_velocity=velocity, 
+                                                      mode=mode,
                                                       accel=accel)
         kf_2d.callkf(dimension=2, init_data=init_data)
     

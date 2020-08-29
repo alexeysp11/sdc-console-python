@@ -8,8 +8,8 @@ sys.path.append('../env')
 from velocity import Velocity
 
 
-def custom_or_default_data(dimension, init_velocity, accel=False):
-    print(f'Dimension: {dimension}D'.upper())
+def custom_or_default_data(dimension, init_velocity, mode, accel=False):
+    print(f'{dimension}-dimensional space'.upper())
 
     while(True):
         is_default = input('Default parameters (yes or no)? ')
@@ -30,6 +30,7 @@ def custom_or_default_data(dimension, init_velocity, accel=False):
     try:
         init_data = Velocity.initialize(dimension=dimension, 
                                         init_velocity=init_velocity, 
+                                        mode=mode,
                                         accel=accel, 
                                         mock=mock)
     
