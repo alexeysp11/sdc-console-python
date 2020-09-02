@@ -15,7 +15,7 @@ NOTE:
 import sys 
 from .sensor import Sensor 
 sys.path.append('../../env')
-from rotation import ConstRotation as cr
+from rotation import Rotation 
 from models.kalman_filter import KalmanFilter as kf 
 import numpy as np
 
@@ -38,7 +38,7 @@ class GyroKF():
             sensor = Sensor()
             
             # get initial data
-            init_data = cr.initialize(dim=dim, const_rotation=const_rotation)
+            init_data = Rotation.initialize(dim=dim, const_rotation=const_rotation)
             
             obs = sensor.measure(init_data, abs_error)
             

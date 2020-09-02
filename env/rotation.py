@@ -5,11 +5,8 @@ Rotation
 import numpy as np
 import random
 
-class Rotation:
-    pass 
 
-
-class ConstRotation(Rotation): 
+class Rotation: 
     def initialize(dim=2, const_rotation=True, mock=True, display=True):
         if dim == 2:
             if mock == True:
@@ -67,6 +64,6 @@ class DifferentRotation(Rotation):
         stop = 1
 
         for i in range(1, time_sec):
-            truth_yaw[i] = truth_yaw[i-1] + random.uniform(start, stop)
+            truth_yaw[i] = truth_yaw[i-1] + random.uniform(start, stop) * 10
 
         return truth_yaw
