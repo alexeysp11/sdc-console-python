@@ -119,5 +119,5 @@ class Velocity:
 
 class DifferentVelocity(Velocity): 
     def redefine_velocity(init_velocity, accel, time):
-        velocity = init_velocity + accel * time
+        velocity = init_velocity + accel 
         return velocity
