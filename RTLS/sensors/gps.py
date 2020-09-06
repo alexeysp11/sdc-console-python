@@ -26,7 +26,7 @@ Also I can improve this algorithm to find out if result depend on n_iter and
 time_sec. 
 """
 
-import sys 
+import sys, traceback 
 from .sensor import Sensor 
 from models.kalman_filter import KalmanFilter as kf 
 import numpy as np
@@ -63,5 +63,5 @@ class GpsKF():
                 sensor.plot(obs, est, init_data, dim=dimension, sensor='gps') 
         
         except Exception as e:
-            print('Info for developer'.upper())
-            print(e)
+            print('Exception: '.upper(), e)
+            traceback.print_tb(e.__traceback__)

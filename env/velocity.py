@@ -9,10 +9,6 @@ import numpy as np
 
 
 class Velocity: 
-    def __init__(self):
-        pass
-    
-    
     def initialize(dimension=1, init_velocity=0.0, mode='p', accel=False, mock=True):
         if dimension == 1: 
             if mock == True:
@@ -72,15 +68,7 @@ class Velocity:
                 init_pos = (truth_value_X, truth_value_Y)
                 init_guess = (init_guess_X, init_guess_Y)
             
-            # allocate space for truth_value
-            size = (time_sec, len(init_pos))
-            truth_value = np.ones(size)
-            truth_value[0, 0], truth_value[0, 1] = init_pos[0], init_pos[1]
-            
-            # determine truth_value as an array 
-            for sec in range(1, time_sec): 
-                truth_value[sec, 0] = truth_value[0, 0] + velocity * sec
-                truth_value[sec, 1] = truth_value[0, 1] + velocity * sec
+            truth_value = Velocity.count_position(init_pos, velocity, accel, time_sec)
         
         return (truth_value, init_guess, time_sec)
     
@@ -106,18 +94,29 @@ class Velocity:
         
         # determine truth_value
         for sec in range(1, time_sec): 
-            # redefine current velocity with following formula: v = at
+            # redefine current velocity in 1D with following formula: v = at
             velocity = DifferentVelocity.redefine_velocity(velocity, accel[sec], sec)
             
-            # if 1D
             # get current position
-            truth_value[sec] = truth_value[sec-1] + velocity + accel[sec] / 2
-            # if 2D
+            if type(init_pos) == float:
+                # if 1D
+                truth_value[sec] = truth_value[sec-1] + velocity + accel[sec] / 2
+            else:
+                # if 2D
+                truth_value[sec, 0] = truth_value[0, 0] + velocity * sec
+                truth_value[sec, 1] = truth_value[0, 1] + velocity * sec
         
         return truth_value
 
 
 class DifferentVelocity(Velocity): 
     def redefine_velocity(init_velocity, accel, time):
-        velocity = init_velocity + accel 
+        if accel == type(float):
+            # if 1D
+            velocity = init_velocity + accel 
+        else: 
+            # if 2D
+            velocity[0] = init_velocity + accel[0] 
+            velocity[1] = init_velocity + accel[1] 
+        
         return velocity

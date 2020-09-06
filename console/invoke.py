@@ -3,7 +3,7 @@ Call IMU (GPS, gyro, accelerometer), DATMO (LIDAR, radar),
 Neural Networks and Fuzzy controller.
 """
 
-import sys
+import sys, traceback
 sys.path.append('../RTLS')
 sys.path.append('../DATMO')
 sys.path.append('../fuzzy_controller')
@@ -39,8 +39,8 @@ def imu(mode):
         imu_2d.callkf(dimension=2, init_data=init_data)
     
     except Exception as e:
-        print('Info for developer:'.upper())
-        print(e)
+        print('Exception: '.upper(), e)
+        traceback.print_tb(e.__traceback__)
 
 
 def gps(mode):
@@ -62,8 +62,8 @@ def gps(mode):
         kf_2d.callkf(dimension=2, init_data=init_data)
     
     except Exception as e:
-        print('Info for developer:'.upper())
-        print(e)
+        print('Exception: '.upper(), e)
+        traceback.print_tb(e.__traceback__)
 
 
 def gyro(mode):
@@ -77,8 +77,8 @@ def gyro(mode):
         gyro_2d.callkf(dim=2, const_rotation=const_rotation)
     
     except Exception as e:
-        print('Info for developer:'.upper())
-        print(e)
+        print('Exception: '.upper(), e)
+        traceback.print_tb(e.__traceback__)
 
 def accel():
     try:
@@ -86,8 +86,8 @@ def accel():
         accel.run()
     
     except Exception as e:
-        print('Info for developer:'.upper())
-        print(e)
+        print('Exception: '.upper(), e)
+        traceback.print_tb(e.__traceback__)
 
 def lidar():
     try:
@@ -95,8 +95,8 @@ def lidar():
         lidar.call_lidar()
     
     except Exception as e:
-        print('Info for developer:'.upper())
-        print(e)
+        print('Exception: '.upper(), e)
+        traceback.print_tb(e.__traceback__)
 
 
 def neural_network(mode, default):
@@ -122,8 +122,8 @@ def neural_network(mode, default):
             neural_network(mode, default) in invoke.py''')
     
     except Exception as e:
-        print('Info for developer:'.upper())
-        print(e)
+        print('Exception: '.upper(), e)
+        traceback.print_tb(e.__traceback__)
 
 
 def fuzzy():
@@ -132,8 +132,8 @@ def fuzzy():
         fc.call()
     
     except Exception as e:
-        print('Info for developer:'.upper())
-        print(e)
+        print('Exception: '.upper(), e)
+        traceback.print_tb(e.__traceback__)
 
 
 def test():

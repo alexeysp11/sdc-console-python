@@ -14,8 +14,16 @@ def define_accel(size, accel):
     
     if accel == True:
         accel = np.zeros(size)
+        
         for i in range(time_sec):
-            accel[i] = random.uniform(start, stop)
+            if size[1] == 1:
+                # if 1D
+                accel[i] = random.uniform(start, stop)
+            else:
+                #if 2D
+                accel[i, 0] = random.uniform(start, stop)
+                accel[i, 1] = random.uniform(start, stop)
+    
     else: 
         accel = np.zeros(size)
     

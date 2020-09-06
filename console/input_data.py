@@ -3,7 +3,7 @@ In this source file I am going to ask user about setting default parameters
 and then call initialize function from velocity module. 
 """
 
-import sys
+import sys, traceback
 sys.path.append('../env')
 from velocity import Velocity
 
@@ -24,8 +24,8 @@ def custom_or_default_data(dimension, init_velocity, mode, accel=False):
                 break
             
         except Exception as e:
-            print('Info for developer'.upper())
-            print(e)
+            print('Exception: '.upper(), e)
+            traceback.print_tb(e.__traceback__)
     
     try:
         init_data = Velocity.initialize(dimension=dimension, 
@@ -35,7 +35,8 @@ def custom_or_default_data(dimension, init_velocity, mode, accel=False):
                                         mock=mock)
     
     except Exception as e:
-        print('Info for developer'.upper())
-        print(e)
+        print('Exception: '.upper(), e)
+        traceback.print_tb(e.__traceback__)
+        init_data = None
     
     return init_data

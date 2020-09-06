@@ -3,6 +3,7 @@ In this file we can determine a class of sensors which contain all of
 attributes and methods of any sensor (such as GPS, gyro etc).
 """
 
+import traceback
 import numpy as np
 from tabulate import tabulate
 import matplotlib.pyplot as plt
@@ -29,8 +30,8 @@ class Sensor():
             return observations
         
         except Exception as e:
-            print('Info for developer'.upper())
-            print(e)
+            print('Exception: '.upper(), e)
+            traceback.print_tb(e.__traceback__)
             return None
     
     
@@ -111,8 +112,8 @@ class Sensor():
             plt.show()
         
         except Exception as e:
-            print('Info for developer'.upper())
-            print(e)
+            print('Exception: '.upper(), e)
+            traceback.print_tb(e.__traceback__)
     
     
     def print_out(self, obs, est, init_data, table=True):
@@ -179,6 +180,6 @@ class Sensor():
             return mean, median
         
         except Exception as e:
-            print('Info for developer'.upper())
-            print(e)
+            print('Exception: '.upper(), e)
+            traceback.print_tb(e.__traceback__)
             return None, None
