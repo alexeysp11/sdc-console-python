@@ -1,5 +1,4 @@
-# sdc-console-python 
-[Click here](https://github.com/alexeysp11/sdc-console-python/blob/master/README_RU.md) to read russian version of README file.    
+# sdc-console-python    
 This application is written in Python and is called `sdc-console-python`, where` sdc` stands for *Self Driving Car*.    
 It is designed as a **console application** that allows you to simulate individual modules of the *sensor system of a self driving car* for different models of vehicle behavior (i.e. when it doesn't move, when it moves at a constant speed, or, for example, when it changes the angle of its movement).    
 This is done by entering the required commands through the **console**.
@@ -14,7 +13,7 @@ In the original version, the **Kalman filter** generated empirical data for a *G
 It should be noted that the **Kalman filter** was guided by the constant location of the car, and also *process variance* was a constant parameter.    
 Later, I divided the tasks that the **Kalman filter** performed between different modules and made it so that the *process variance* parameter changes its value with each iteration depending on the calculated *aposteri error* at the previous iteration ("the larger the error value at the previous iteration, the larger step we have to take in the current iteration to reduce this error").    
 This allowed the **Kalman filter** to be used to add models with *constant speed* and *random acceleration*, and to add a *gyroscope*.
-### Fuzzy regulator
+### Fuzzy controller
 One of the ideas on how to teach a car to independently calculate the speed of its movement may be the following algorithm:
 1. Set the starting and ending points of the path,
 2. Estimate the location of the car at the current time and mark it on the map,
