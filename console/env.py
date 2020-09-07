@@ -2,15 +2,29 @@
 Environment settings.
 """
 
-def setting(mode):
+def setting(mode, dim):
     if mode == 'p':
-        velocity = 0.0
+        if dim == 1:
+            velocity = 0.0
+        else:
+            velocity = [0.0, 0.0]
+        
         accel = False
+    
     elif mode == 'v':
-        velocity = 2.0
+        if dim == 1:
+            velocity = 2.0
+        else:
+            velocity = [2.0, 1.5]
+        
         accel = False
+    
     elif mode == 'a':
-        velocity = 2.5
+        if dim == 1:
+            velocity = 2.5
+        else: 
+            velocity = [2.5, 4.5]
+        
         accel = True
 
     return velocity, accel

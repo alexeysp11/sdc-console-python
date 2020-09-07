@@ -44,9 +44,10 @@ class Velocity:
                 velocity = init_velocity
                 time_sec = 60
 
-                print(f'Real coordinates[0]: {init_pos}')
+                print(f'Real coordinates (at the beggining): {init_pos}')
                 print(f'Initial coordinates: {init_guess}')
-                print(f'Velocity: {velocity} m/s')
+                print(f'Velocity_x: {velocity[0]} m/s')
+                print(f'Velocity_y: {velocity[1]} m/s')
                 print(f'Time (sec): {time_sec}')
             
             else:
@@ -56,10 +57,12 @@ class Velocity:
                 init_guess_X = float(input('Initial guess X: '))
                 init_guess_Y = float(input('Initial guess Y: '))
                 
+                velocity = [0.0, 0.0]
+                
                 if mode != 'p':
-                    velocity = float(input('Velocity (m/s): '))
+                    velocity[0] = float(input('Velocity X (m/s): '))
+                    velocity[1] = float(input('Velocity Y (m/s): '))
                 else: 
-                    velocity = 0.0
                     print(f'Velocity (m/s): {velocity}')
                 
                 time_sec = int(input('Time (sec): '))
@@ -91,7 +94,7 @@ class Velocity:
         but returns it as an array of floats.
         """
         accel = acceleration.define_accel(size, accel)
-        
+
         # determine truth_value
         for sec in range(1, time_sec): 
             # redefine current velocity in 1D with following formula: v = at
@@ -103,20 +106,27 @@ class Velocity:
                 truth_value[sec] = truth_value[sec-1] + velocity + accel[sec] / 2
             else:
                 # if 2D
-                truth_value[sec, 0] = truth_value[0, 0] + velocity * sec
-                truth_value[sec, 1] = truth_value[0, 1] + velocity * sec
+                truth_value[sec, 0] = truth_value[sec-1, 0] + velocity[0] + accel[sec, 0] / 2
+                truth_value[sec, 1] = truth_value[sec-1, 1] + velocity[1] + accel[sec, 1] / 2
         
         return truth_value
 
 
 class DifferentVelocity(Velocity): 
     def redefine_velocity(init_velocity, accel, time):
-        if accel == type(float):
+        if len(accel) == 1:
             # if 1D
             velocity = init_velocity + accel 
-        else: 
+        else:
             # if 2D
-            velocity[0] = init_velocity + accel[0] 
-            velocity[1] = init_velocity + accel[1] 
+            """
+            print(f'init_velocity = {init_velocity}')
+            print(f'accel = {accel}')
+            print(f'time = {time}')
+            """
+
+            velocity = [0.0, 0.0]
+            velocity[0] = init_velocity[0] + accel[0] 
+            velocity[1] = init_velocity[1] + accel[1] 
         
         return velocity

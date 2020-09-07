@@ -45,18 +45,19 @@ def imu(mode):
 
 def gps(mode):
     try:
-        velocity, accel = env.setting(mode)
+        velocity1d, accel = env.setting(mode, 1)
+        velocity2d, accel = env.setting(mode, 2)
         
         kf_1d = GpsKF()
         init_data = input_data.custom_or_default_data(dimension=1, 
-                                                      init_velocity=velocity, 
+                                                      init_velocity=velocity1d, 
                                                       mode=mode,
                                                       accel=accel)
         kf_1d.callkf(dimension=1, init_data=init_data)
         
         kf_2d = GpsKF()
         init_data = input_data.custom_or_default_data(dimension=2, 
-                                                      init_velocity=velocity, 
+                                                      init_velocity=velocity2d, 
                                                       mode=mode,
                                                       accel=accel)
         kf_2d.callkf(dimension=2, init_data=init_data)
