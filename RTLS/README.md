@@ -50,7 +50,7 @@ Time (sec): 40
 Measures of central tendency of error:
 median = 4.0, mean = 5.0
 ```
-[sdc gps --p 1D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--p%20%201D.png)
+![sdc gps --p 1D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--p%20%201D.png)
 ```
 2-DIMENSIONAL SPACE
 Default parameters (yes or no)? yes
@@ -63,7 +63,7 @@ Measures of central tendency of error:
 median_X = 12.683, mean_X = 12.665
 median_Y = 8.382, mean_Y = 9.078
 ```
-[sdc gps --p 2D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--p%20%202D.png)
+![sdc gps --p 2D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--p%20%202D.png)
 ```
 >> sdc gps --v
 1-DIMENSIONAL SPACE
@@ -75,7 +75,7 @@ Time (sec): 50
 Measures of central tendency of error:
 median = 10.0, mean = 11.0
 ```
-[sdc gps --v 2D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--v%20%201D.png)
+![sdc gps --v 2D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--v%20%201D.png)
 ```
 2-DIMENSIONAL SPACE
 Default parameters (yes or no)? no
@@ -91,7 +91,7 @@ Measures of central tendency of error:
 median_X = 9.112, mean_X = 12.966
 median_Y = 7.239, mean_Y = 7.926
 ```
-[sdc gps --v 2D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--v%20%202D.png)
+![sdc gps --v 2D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--v%20%202D.png)
 ```
 >> sdc gps --a
 1-DIMENSIONAL SPACE
@@ -104,7 +104,7 @@ Time (sec): 50
 Measures of central tendency of error:
 median = 6.0, mean = 7.0
 ```
-[sdc gps --a 1D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--a%20%201D.png)
+![sdc gps --a 1D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--a%20%201D.png)
 ```
 2-DIMENSIONAL SPACE
 Default parameters (yes or no)? y
@@ -117,4 +117,4 @@ Measures of central tendency of error:
 median_X = 23.735, mean_X = 23.575
 median_Y = 9.919, mean_Y = 11.518
 ```
-[sdc gps --a 2D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--a%20%202D.png)
+![sdc gps --a 2D](https://github.com/alexeysp11/sdc-console-python/blob/master/RTLS/img/sdc%20gps%20--a%20%202D.png)
