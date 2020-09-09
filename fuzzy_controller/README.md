@@ -46,3 +46,4 @@ Select one of these options:
 
 Please, enter 1 or 2: 2
 ```
+![FuzzyController](https://github.com/alexeysp11/sdc-console-python/blob/master/fuzzy_controller/img/fuzzy_distance_speed.png)
