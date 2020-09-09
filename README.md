@@ -25,10 +25,10 @@ In a general sense, **fuzzy controller** allows the car to adjust its speed acco
 2. Build rulebase in the following way: *"if the distance is close then speed should be low"* and *"if distance is far then speed should be high"* and so on,
 3. Apply the **fuzzy inference algorithm** (the most used is the **Mamdani algorithm**).    
 Thus, the task of the **fuzzy controller** is to take the distance to the next pivot point and return the speed corresponding to that distance.
-### Neural network for handwritten number recognition
+### Neural network for handwritten digits recognition
 A huge amount of information required for self driving car control system is visual (for example, *road markings*, *road signs* and *traffic signals*).    
 Moreover, this kind of information cannot be obtained using the so-called traditional measurement methods using *radar*, *lidar*, *GPS*, *gyroscope* and *accelerometer*. A well-established solution for **computer vision** is currently **neural networks**.    
-Now I only added a **neural network algorithm for recognizing handwritten numbers (MNIST)** to this app.
+Now I only added a **neural network algorithm for recognizing handwritten digits (MNIST)** to this app.
 ## Commands
 Now I will briefly talk about the commands you can use in this application.
 Commands are entered as follows:
