@@ -9,7 +9,7 @@ def setting(mode, dim):
         else:
             velocity = [0.0, 0.0]
         
-        accel = False
+        is_accel = False
     
     elif mode == 'v':
         if dim == 1:
@@ -17,7 +17,7 @@ def setting(mode, dim):
         else:
             velocity = [2.0, 1.5]
         
-        accel = False
+        is_accel = False
     
     elif mode == 'a':
         if dim == 1:
@@ -25,6 +25,6 @@ def setting(mode, dim):
         else: 
             velocity = [2.5, 4.5]
         
-        accel = True
+        is_accel = True
 
-    return velocity, accel
+    return velocity, is_accel

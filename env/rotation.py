@@ -7,7 +7,7 @@ import random
 
 
 class Rotation: 
-    def initialize(dim=2, const_rotation=True, mock=True, display=True):
+    def initialize(dim=2, is_const_rotation=True, mock=True, display=True):
         if dim == 2:
             if mock == True:
                 # mock initial data (in angles)
@@ -44,7 +44,7 @@ class Rotation:
             n_yaw = int(time_sec / dt)
             shape = (time_sec, 1)
 
-            if const_rotation == False: 
+            if is_const_rotation == False: 
                 truth_yaw = DifferentRotation.define_dif_rotation(truth_yaw, shape)
             
             return (truth_yaw, init_yaw, time_sec, n_yaw)

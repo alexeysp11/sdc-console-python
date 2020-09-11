@@ -31,14 +31,14 @@ class GyroKF():
     rotations accordingly to frequency and truth_yaw. 
     """
     
-    def callkf(self, dim=2, const_rotation=True):
+    def callkf(self, dim=2, is_const_rotation=True):
         abs_error = 15
         
         try:
             sensor = Sensor()
             
             # get initial data
-            init_data = Rotation.initialize(dim=dim, const_rotation=const_rotation)
+            init_data = Rotation.initialize(dim=dim, is_const_rotation=is_const_rotation)
             
             obs = sensor.measure(init_data, abs_error)
             
@@ -65,5 +65,5 @@ class GyroKF():
                 kftest_2d.plot_2d(obs, est, kf_2d)
         
         except Exception as e:
-            print('Info for developer'.upper())
-            print(e)
+            print('Exception: '.upper(), e)
+            traceback.print_tb(e.__traceback__)

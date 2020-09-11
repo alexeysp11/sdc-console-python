@@ -8,7 +8,7 @@ sys.path.append('../env')
 from velocity import Velocity
 
 
-def custom_or_default_data(dimension, init_velocity, mode, accel=False):
+def custom_or_default_data(dimension, init_velocity, mode, is_accel=False):
     print(f'{dimension}-dimensional space'.upper())
 
     while(True):
@@ -31,7 +31,7 @@ def custom_or_default_data(dimension, init_velocity, mode, accel=False):
         init_data = Velocity.initialize(dimension=dimension, 
                                         init_velocity=init_velocity, 
                                         mode=mode,
-                                        accel=accel, 
+                                        is_accel=is_accel, 
                                         mock=mock)
     
     except Exception as e:

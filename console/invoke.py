@@ -8,7 +8,7 @@ sys.path.append('../RTLS')
 sys.path.append('../DATMO')
 sys.path.append('../fuzzy_controller')
 sys.path.append('../computer_vision')
-import env
+import environment
 import input_data
 from sensors.imu import ImuKF
 from sensors.gps import GpsKF
@@ -22,20 +22,20 @@ from road_signs import signs_default
 
 def imu(mode):
     try:
-        velocity, accel = env.setting(mode)
+        velocity, is_accel = environment.setting(mode)
         
         imu_1d = ImuKF()
         init_data = input_data.custom_or_default_data(dimension=1, 
                                                       init_velocity=velocity, 
                                                       mode=mode,
-                                                      accel=accel)
+                                                      is_accel=is_accel)
         imu_1d.callkf(dimension=1, init_data=init_data)
         
         imu_2d = ImuKF()
         init_data = input_data.custom_or_default_data(dimension=2, 
                                                       init_velocity=velocity, 
                                                       mode=mode,
-                                                      accel=accel)
+                                                      is_accel=is_accel)
         imu_2d.callkf(dimension=2, init_data=init_data)
     
     except Exception as e:
@@ -45,21 +45,21 @@ def imu(mode):
 
 def gps(mode):
     try:
-        velocity1d, accel = env.setting(mode, 1)
-        velocity2d, accel = env.setting(mode, 2)
+        velocity1d, is_accel = environment.setting(mode, 1)
+        velocity2d, is_accel = environment.setting(mode, 2)
         
         kf_1d = GpsKF()
         init_data = input_data.custom_or_default_data(dimension=1, 
                                                       init_velocity=velocity1d, 
                                                       mode=mode,
-                                                      accel=accel)
+                                                      is_accel=is_accel)
         kf_1d.callkf(dimension=1, init_data=init_data)
         
         kf_2d = GpsKF()
         init_data = input_data.custom_or_default_data(dimension=2, 
                                                       init_velocity=velocity2d, 
                                                       mode=mode,
-                                                      accel=accel)
+                                                      is_accel=is_accel)
         kf_2d.callkf(dimension=2, init_data=init_data)
     
     except Exception as e:
@@ -69,17 +69,18 @@ def gps(mode):
 
 def gyro(mode):
     if mode == 'c':
-        const_rotation = True
+        is_const_rotation = True
     elif mode == 'nu':
-        const_rotation = False
+        is_const_rotation = False
 
     try:
         gyro_2d = GyroKF()
-        gyro_2d.callkf(dim=2, const_rotation=const_rotation)
+        gyro_2d.callkf(dim=2, is_const_rotation=is_const_rotation)
     
     except Exception as e:
         print('Exception: '.upper(), e)
         traceback.print_tb(e.__traceback__)
+
 
 def accel():
     try:
@@ -89,6 +90,7 @@ def accel():
     except Exception as e:
         print('Exception: '.upper(), e)
         traceback.print_tb(e.__traceback__)
+
 
 def lidar():
     try:

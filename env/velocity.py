@@ -9,7 +9,7 @@ import numpy as np
 
 
 class Velocity: 
-    def initialize(dimension=1, init_velocity=0.0, mode='p', accel=False, mock=True):
+    def initialize(dimension=1, init_velocity=0.0, mode='p', is_accel=False, mock=True):
         if dimension == 1: 
             if mock == True:
                 init_pos = 45.0
@@ -35,7 +35,7 @@ class Velocity:
                 
                 time_sec = int(input('Time (sec): ')) + 1
             
-            truth_value = Velocity.count_position(init_pos, velocity, accel, time_sec)
+            truth_value = Velocity.count_position(init_pos, velocity, is_accel, time_sec)
         
         if dimension == 2: 
             if mock == True:
@@ -71,12 +71,12 @@ class Velocity:
                 init_pos = (truth_value_X, truth_value_Y)
                 init_guess = (init_guess_X, init_guess_Y)
             
-            truth_value = Velocity.count_position(init_pos, velocity, accel, time_sec)
+            truth_value = Velocity.count_position(init_pos, velocity, is_accel, time_sec)
         
         return (truth_value, init_guess, time_sec)
     
     
-    def count_position(init_pos, velocity, accel, time_sec):
+    def count_position(init_pos, velocity, is_accel, time_sec):
         if type(init_pos) == float:
             # allocate space for truth_value
             size = (time_sec, 1)
@@ -93,7 +93,7 @@ class Velocity:
         acceleration.define_accel takes accel as a bool variable 
         but returns it as an array of floats.
         """
-        accel = acceleration.define_accel(size, accel)
+        accel = acceleration.define_accel(size, is_accel)
 
         # determine truth_value
         for sec in range(1, time_sec): 
