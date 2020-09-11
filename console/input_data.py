@@ -16,11 +16,11 @@ def custom_or_default_data(dimension, init_velocity, mode, is_accel=False):
 
         try:
             if is_default == 'y' or is_default == 'yes': 
-                mock = True
+                is_mock = True
                 break
             
             elif is_default == 'n' or is_default == 'no':
-                mock = False
+                is_mock = False
                 break
             
         except Exception as e:
@@ -32,7 +32,7 @@ def custom_or_default_data(dimension, init_velocity, mode, is_accel=False):
                                         init_velocity=init_velocity, 
                                         mode=mode,
                                         is_accel=is_accel, 
-                                        mock=mock)
+                                        is_mock=is_mock)
     
     except Exception as e:
         print('Exception: '.upper(), e)

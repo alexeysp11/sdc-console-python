@@ -9,9 +9,9 @@ import numpy as np
 
 
 class Velocity: 
-    def initialize(dimension=1, init_velocity=0.0, mode='p', is_accel=False, mock=True):
+    def initialize(dimension=1, init_velocity=0.0, mode='p', is_accel=False, is_mock=True):
         if dimension == 1: 
-            if mock == True:
+            if is_mock == True:
                 init_pos = 45.0
                 init_guess = 55.0
                 velocity = init_velocity
@@ -38,7 +38,7 @@ class Velocity:
             truth_value = Velocity.count_position(init_pos, velocity, is_accel, time_sec)
         
         if dimension == 2: 
-            if mock == True:
+            if is_mock == True:
                 init_pos = (163.0, 55.0)
                 init_guess = (152.0, 68.0)
                 velocity = init_velocity

@@ -25,8 +25,8 @@ class Lidar:
         sensor.plot(init_data)
     
     
-    def initialize(self, mock=True, display=True):
-        if mock == True:
+    def initialize(self, is_mock=True, display=True):
+        if is_mock == True:
             frequency = 50
             accuracy = 0.025 
             distance = 40 

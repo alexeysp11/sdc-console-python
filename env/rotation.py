@@ -7,9 +7,9 @@ import random
 
 
 class Rotation: 
-    def initialize(dim=2, is_const_rotation=True, mock=True, display=True):
+    def initialize(dim=2, is_const_rotation=True, is_mock=True, display=True):
         if dim == 2:
-            if mock == True:
+            if is_mock == True:
                 # mock initial data (in angles)
                 truth_yaw = 50.0
                 init_yaw = 45
