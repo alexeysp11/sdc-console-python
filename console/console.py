@@ -10,16 +10,15 @@ All modules can be called by:
 All information can be called by:
     sdc -info
     sdc -help
-
-When we call neural network modules, we write default and custom as is because
-in the console it's very difficult to find some difference between commands if
-we write d or c.
 """
 
+import os
+import sys
 import info
 import invoke
 
 if __name__ == '__main__':
+    print()
     print('Welcome to SDC console!')
     
     while True:
@@ -95,8 +94,8 @@ if __name__ == '__main__':
                 invoke.fuzzy()
 
             elif command == 'sdc exit':
-                break
-
+                sys.exit()
+            
             else:
                 print('Incorrect command!')
         

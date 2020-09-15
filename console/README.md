@@ -1,4 +1,5 @@
 # console 
+`console.py` is an entry point of this program.
 ## How this module works
 ```
 Welcome to SDC console!
