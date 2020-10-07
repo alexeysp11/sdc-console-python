@@ -4,8 +4,8 @@ Also here I can implement kf for non-moving car by passing velocity that is
 equal to zero.
 """
 
-import acceleration 
 import numpy as np
+import acceleration 
 
 
 class Velocity: 

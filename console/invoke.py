@@ -16,7 +16,8 @@ from sensors.gyro import GyroKF
 from sensors.accelerometer import Accelerometer
 from lidar import Lidar
 from call_fc import CallFuzzy
-from MNIST import mnist_default, mnist_custom
+from MNIST import mnist_default
+from MNIST.mnist_custom import MnistCustomDigits
 from road_signs import signs_default
 
 
@@ -115,10 +116,14 @@ def neural_network(mode, default):
         
         if mode == 'mnist' and default == True:
             mnist_default.run()
+        
         elif mode == 'mnist' and default == False:
+            mnist_custom = MnistCustomDigits()
             mnist_custom.run()
+        
         elif mode == 'signs' and default == True:
             signs_default.run()
+        
         else:
             print('Info for developer:'.upper())
             print('''Incorrect mode or default values in: 
