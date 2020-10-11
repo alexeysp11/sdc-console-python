@@ -10,6 +10,11 @@ All modules can be called by:
 All information can be called by:
     sdc -info
     sdc -help
+
+NOTE: 
+You can set parameters of the modules directly with the following script: 
+    import sys
+    fib(int(sys.argv[1]))
 """
 
 import os

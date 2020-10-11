@@ -1,11 +1,3 @@
-import os
-import sys
-
-# Standard scientific Python imports
-import matplotlib.pyplot as plt
-#import matplotlib.image as mpimg
-from PIL import Image
-
 # Import datasets, classifiers and performance metrics
 from sklearn import datasets, svm, metrics
 from sklearn.model_selection import train_test_split
@@ -13,6 +5,8 @@ from sklearn.model_selection import train_test_split
 
 class MnistCustomDigits:
     def run(self):
+        import matplotlib.pyplot as plt
+
         # The digits dataset
         digits = datasets.load_digits()
 
@@ -42,9 +36,13 @@ class MnistCustomDigits:
             data, digits.target, train_size=0.8, shuffle=False)
         
         # initialize test subsets with images of digits from digits_test folder
-        #pictures_test, lables_test = 
-        self.load_custom_test_digits()
-
+        pictures_test, labels_test = self.load_custom_test_digits()
+        
+        print(f'pictures_train[{ len(pictures_train[0]) }] = { pictures_train }')
+        print(f'pictures_test[{ len(pictures_test[0]) }] = { pictures_test }')
+        print(f'labels_train = { labels_train }')
+        print(f'labels_test = { labels_test }')
+        
         # We learn the digits on the first half of the digits
         classifier.fit(pictures_train, labels_train)
 
@@ -68,32 +66,67 @@ class MnistCustomDigits:
 
         plt.show()
     
+
     # Load digits for test
     def load_custom_test_digits(self):
-        """
-        # incorrect path to the image! 
-        image = Image.open("0.png")
-        image.show()
-        """
-        
+        import os
+        import numpy as np 
+        from PIL import Image, ImageOps
+        from scipy.ndimage.measurements import center_of_mass
+
         os.chdir('../computer_vision/MNIST/digits_test')
         
-        lables_test = []
-        
+        # Create empty numpy array for 10 digits with size 8x8px
+        pictures_test = np.empty((10, 64))
+
+        # Create an empty list for labels of the pictures
+        labels_test = []
+
+        indexImgFlatten = 0
+
+        # Read the png images and flatten them into array of pixels 
         for f in os.listdir('.'): 
             if f.endswith('.png'): 
-                i = Image.open(f)
+                img = Image.open(f)
 
-                """
-                # Define lables_test
-                fn, fext = os.path.splitext(f)
-                lables_test.append(i)
-                """
+                # convert image to single channel and invert
+                #inverted_img = ImageOps.invert(img.convert('L'))
+                
+                # crop image to match the bounding box
+                #cropped_img = inverted_img.crop(inverted_img.getbbox())
+                cropped_img = img.crop(img.getbbox())
 
-                i.show()
+                # scale image to fit in 8x8px box
+                cropped_img.thumbnail((8, 8))
+                
+                # convert image to numpy array
+                np_img = np.array(cropped_img)
+                print(f'np_img[{ np_img.shape }] = { np_img }')
+                mass_center = center_of_mass(np_img)
+
+                # create final 28x28 image and paste centered digit
+                final_img = Image.new(mode='L', size=(8, 8))
+                final_img = ImageOps.invert(final_img.convert('L'))
+                
+                point = (4 - int(round(mass_center[1])), 4 - int((round(mass_center[0]))))
+                final_img.paste(cropped_img, point)
+
+                final_img.show()
+
+                # convert image to numpy array and reshape it
+                result = np.array(final_img).reshape((64, ))
+                
+                print(f'result[{ indexImgFlatten }] = { result }')
+                
+                pictures_test[indexImgFlatten] = result
+
+                indexImgFlatten += 1
         
-        
+        # Define labels_test
         for i in range(10): 
-            lables_test.append(i)
+            labels_test.append(i)
 
-        #return pictures_test, lables_test
+        #pictures_test = np.asarray(pictures_test)
+        labels_test = np.asarray(labels_test)
+
+        return pictures_test, labels_test
