@@ -6,50 +6,30 @@ from sklearn.model_selection import train_test_split
 class MnistCustomDigits:
     def run(self):
         import matplotlib.pyplot as plt
+        
+        # Create a classifier: a support vector classifier
+        classifier = svm.SVC(gamma=0.001)
 
-        # The digits dataset
-        digits = datasets.load_digits()
+        # initialize test subsets with images of digits from digits_test folder
+        pixels_train, labels_train, train_imgs = self.load_digits('digits_8x8')
 
-        # The data that we are interested in is made of 8x8 images of digits, let's
-        # have a look at the first 4 images, stored in the `images` attribute of the
-        # dataset.  If we were working from image files, we could load them using
-        # matplotlib.pyplot.imread.  Note that each image must have the same size. For these
-        # images, we know which digit they represent: it is given in the 'target' of
-        # the dataset.
+        # initialize test subsets with images of digits from digits_test folder
+        pixels_test, labels_test, test_imgs = self.load_digits('zeros_8x8')
+        
+        # We learn the digits on the first half of the digits
+        classifier.fit(pixels_train, labels_train)
+
+        # Now predict the value of the digit on the second half:
+        predicted = classifier.predict(pixels_test)
+
         _, axes = plt.subplots(2, 4)
-        images_and_labels = list(zip(digits.images, digits.target))
+        images_and_labels = list(zip(train_imgs[:len(train_imgs) // 2], labels_train))
         for ax, (image, label) in zip(axes[0, :], images_and_labels[:4]):
             ax.set_axis_off()
             ax.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
             ax.set_title('Training: %i' % label)
-
-        # In order to apply a classifier on this data, we need to flatten the image, 
-        # to turn the data in a (samples, feature) matrix:
-        n_samples = len(digits.images)
-        data = digits.images.reshape((n_samples, -1))
-
-        # Create a classifier: a support vector classifier
-        classifier = svm.SVC(gamma=0.001)
-
-        # Split data into train and test subsets
-        pictures_train, pictures_test, labels_train, labels_test = train_test_split(
-            data, digits.target, train_size=0.8, shuffle=False)
         
-        # initialize test subsets with images of digits from digits_test folder
-        pictures_test, labels_test = self.load_custom_test_digits()
-        
-        print(f'pictures_train[{ len(pictures_train[0]) }] = { pictures_train }')
-        print(f'pictures_test[{ len(pictures_test[0]) }] = { pictures_test }')
-        print(f'labels_train = { labels_train }')
-        print(f'labels_test = { labels_test }')
-        
-        # We learn the digits on the first half of the digits
-        classifier.fit(pictures_train, labels_train)
-
-        # Now predict the value of the digit on the second half:
-        predicted = classifier.predict(pictures_test)
-
-        images_and_predictions = list(zip(digits.images[n_samples // 2:], predicted))
+        images_and_predictions = list(zip(test_imgs[len(test_imgs) // 2:], predicted))
         for ax, (image, prediction) in zip(axes[1, :], images_and_predictions[:4]):
             ax.set_axis_off()
             ax.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
@@ -58,7 +38,7 @@ class MnistCustomDigits:
         print("Classification report for classifier %s:\n%s\n"
             % (classifier, metrics.classification_report(labels_test, predicted)))
         
-        disp = metrics.plot_confusion_matrix(classifier, pictures_test, 
+        disp = metrics.plot_confusion_matrix(classifier, pixels_test, 
                                             labels_test)
         
         disp.figure_.suptitle("Confusion Matrix")
@@ -68,19 +48,25 @@ class MnistCustomDigits:
     
 
     # Load digits for test
-    def load_custom_test_digits(self):
+    def load_digits(self, path):
+        """
+        Pass name of folder as path variable. 
+        """
+
         import os
         import numpy as np 
         from PIL import Image, ImageOps
         from scipy.ndimage.measurements import center_of_mass
 
-        os.chdir('../computer_vision/MNIST/digits_test')
+        # folders: digits_test, digits_8x8, zeros, zeros_8x8
+        os.chdir('../computer_vision/MNIST/' + path)
         
         # Create empty numpy array for 10 digits with size 8x8px
-        pictures_test = np.empty((10, 64))
+        pixels = np.empty((10, 64))
 
         # Create an empty list for labels of the pictures
-        labels_test = []
+        labels = []
+        imgs = []
 
         indexImgFlatten = 0
 
@@ -88,45 +74,68 @@ class MnistCustomDigits:
         for f in os.listdir('.'): 
             if f.endswith('.png'): 
                 img = Image.open(f)
+                imgs.append(img)
 
                 # convert image to single channel and invert
-                #inverted_img = ImageOps.invert(img.convert('L'))
+                #inverted_img = ImageOps.invert(img.convert('L')) # inverted
                 
                 # crop image to match the bounding box
-                #cropped_img = inverted_img.crop(inverted_img.getbbox())
-                cropped_img = img.crop(img.getbbox())
+                #cropped_img = inverted_img.crop(inverted_img.getbbox()) # inverted
+                cropped_img = img.crop(img.getbbox()) # non-inverted
 
                 # scale image to fit in 8x8px box
                 cropped_img.thumbnail((8, 8))
                 
                 # convert image to numpy array
                 np_img = np.array(cropped_img)
-                print(f'np_img[{ np_img.shape }] = { np_img }')
                 mass_center = center_of_mass(np_img)
 
                 # create final 28x28 image and paste centered digit
                 final_img = Image.new(mode='L', size=(8, 8))
-                final_img = ImageOps.invert(final_img.convert('L'))
-                
+                final_img = ImageOps.invert(final_img.convert('L')) # non-inverted
+
                 point = (4 - int(round(mass_center[1])), 4 - int((round(mass_center[0]))))
                 final_img.paste(cropped_img, point)
 
-                final_img.show()
+                #final_img.show()
 
                 # convert image to numpy array and reshape it
                 result = np.array(final_img).reshape((64, ))
                 
-                print(f'result[{ indexImgFlatten }] = { result }')
-                
-                pictures_test[indexImgFlatten] = result
+                pixels[indexImgFlatten] = self.add_brightness(result)
 
                 indexImgFlatten += 1
         
         # Define labels_test
-        for i in range(10): 
-            labels_test.append(i)
-
+        if path == 'digits_8x8': 
+            for i in range(10): 
+                labels.append(i)
+        
+        # if we use folder zeros_8x8:
+        if path == 'zeros_8x8': 
+            for i in range(len(pixels)):
+                labels.append(0)
+        
+        
         #pictures_test = np.asarray(pictures_test)
-        labels_test = np.asarray(labels_test)
+        labels = np.asarray(labels)
+        
+        os.chdir('../../../console')
+        
+        return pixels, labels, imgs
+    
 
-        return pictures_test, labels_test
+    def add_brightness(self, np_img):
+        # inverted images
+        for index, px in enumerate(np_img): 
+            if px > 55:
+                np_img[index] = 255
+        
+        """
+        # non-inverted images
+        for index, px in enumerate(np_img): 
+            if px < 200:
+                np_img[index] = 0
+        """
+        
+        return np_img
