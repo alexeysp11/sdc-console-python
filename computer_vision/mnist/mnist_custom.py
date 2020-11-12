@@ -1,3 +1,5 @@
+import numpy as np 
+
 # Import datasets, classifiers and performance metrics
 from sklearn import datasets, svm, metrics
 from sklearn.model_selection import train_test_split
@@ -10,11 +12,31 @@ class MnistCustomDigits:
         # Create a classifier: a support vector classifier
         classifier = svm.SVC(gamma=0.001)
 
-        # initialize test subsets with images of digits from digits_test folder
-        pixels_train, labels_train, train_imgs = self.load_digits('digits_8x8')
+        # Initialize test subsets of images 
+        pixels_train0, labels_train0, train_imgs0 = self.load_digits(path='0_8x8', label='0')
+        pixels_train1, labels_train1, train_imgs1 = self.load_digits(path='1_8x8', label='1')
+        """
+        pixels_train2, labels_train2, train_imgs2 = self.load_digits(path='2_8x8', label='2')
+        pixels_train3, labels_train3, train_imgs3 = self.load_digits(path='3_8x8', label='3')
+        pixels_train4, labels_train4, train_imgs4 = self.load_digits(path='4_8x8', label='4')
+        pixels_train5, labels_train5, train_imgs5 = self.load_digits(path='5_8x8', label='5')
+        pixels_train6, labels_train6, train_imgs6 = self.load_digits(path='6_8x8', label='6')
+        pixels_train7, labels_train7, train_imgs7 = self.load_digits(path='7_8x8', label='7')
+        pixels_train8, labels_train8, train_imgs8 = self.load_digits(path='8_8x8', label='8')
+        pixels_train9, labels_train9, train_imgs9 = self.load_digits(path='9_8x8', label='9')
+        """
+        
+        # Concatenate pixels, labels and imgs 
+        pixels_train = np.concatenate((pixels_train0, 
+                                        pixels_train1), 
+                                    axis=0)
+        labels_train = np.concatenate((labels_train0, 
+                                        labels_train1), 
+                                    axis=0)
+        train_imgs = train_imgs0 + train_imgs1
 
         # initialize test subsets with images of digits from digits_test folder
-        pixels_test, labels_test, test_imgs = self.load_digits('zeros_8x8')
+        pixels_test, labels_test, test_imgs = self.load_digits(path='digits_8x8')
         
         # We learn the digits on the first half of the digits
         classifier.fit(pixels_train, labels_train)
@@ -48,21 +70,24 @@ class MnistCustomDigits:
     
 
     # Load digits for test
-    def load_digits(self, path):
+    def load_digits(self, path, label='all'):
         """
         Pass name of folder as path variable. 
         """
 
         import os
-        import numpy as np 
         from PIL import Image, ImageOps
         from scipy.ndimage.measurements import center_of_mass
 
         # folders: digits_test, digits_8x8, zeros, zeros_8x8
         os.chdir('../computer_vision/MNIST/' + path)
         
-        # Create empty numpy array for 10 digits with size 8x8px
-        pixels = np.empty((10, 64))
+        # Create empty numpy array for digits with size 8x8px
+        n_images = 0
+        for f in os.listdir('.'): 
+            if f.endswith('.png'): 
+                n_images += 1
+        pixels = np.empty((n_images, 64))
 
         # Create an empty list for labels of the pictures
         labels = []
@@ -106,15 +131,18 @@ class MnistCustomDigits:
 
                 indexImgFlatten += 1
         
-        # Define labels_test
-        if path == 'digits_8x8': 
+        # Define labels
+        if label == 'all': 
             for i in range(10): 
                 labels.append(i)
-        
-        # if we use folder zeros_8x8:
-        if path == 'zeros_8x8': 
+        else:
             for i in range(len(pixels)):
-                labels.append(0)
+                try: 
+                    int_label = int(label)
+                    labels.append(int_label)
+                except Exception as e:
+                    print('Exception: '.upper(), e)
+                    traceback.print_tb(e.__traceback__)
         
         
         #pictures_test = np.asarray(pictures_test)
