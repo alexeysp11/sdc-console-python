@@ -1,21 +1,26 @@
 import numpy as np 
 
-# Import datasets, classifiers and performance metrics
-from sklearn import datasets, svm, metrics
-from sklearn.model_selection import train_test_split
-
-
 class MnistCustomDigits:
     def run(self):
         import matplotlib.pyplot as plt
         
+        # Import datasets, classifiers and performance metrics
+        from sklearn import datasets, svm, metrics
+        from sklearn.model_selection import train_test_split
+        from sklearn.neural_network import MLPClassifier
+        
         # Create a classifier: a support vector classifier
         classifier = svm.SVC(gamma=0.001)
+        
+        # Create a classifier: multi-layer perceptron (MLP) algorithm
+        """
+        clf = MLPClassifier(solver='lbfgs', alpha=1e-5,
+                            hidden_layer_sizes=(5, 2), random_state=1)
+        """
 
         # Initialize test subsets of images 
         pixels_train0, labels_train0, train_imgs0 = self.load_digits(path='0_8x8', label='0')
         pixels_train1, labels_train1, train_imgs1 = self.load_digits(path='1_8x8', label='1')
-        """
         pixels_train2, labels_train2, train_imgs2 = self.load_digits(path='2_8x8', label='2')
         pixels_train3, labels_train3, train_imgs3 = self.load_digits(path='3_8x8', label='3')
         pixels_train4, labels_train4, train_imgs4 = self.load_digits(path='4_8x8', label='4')
@@ -24,16 +29,31 @@ class MnistCustomDigits:
         pixels_train7, labels_train7, train_imgs7 = self.load_digits(path='7_8x8', label='7')
         pixels_train8, labels_train8, train_imgs8 = self.load_digits(path='8_8x8', label='8')
         pixels_train9, labels_train9, train_imgs9 = self.load_digits(path='9_8x8', label='9')
-        """
-        
+                
         # Concatenate pixels, labels and imgs 
         pixels_train = np.concatenate((pixels_train0, 
-                                        pixels_train1), 
+                                        pixels_train1,
+                                        pixels_train2,
+                                        pixels_train3,
+                                        pixels_train4,
+                                        pixels_train5,
+                                        pixels_train6, 
+                                        pixels_train7,
+                                        pixels_train8,
+                                        pixels_train9), 
                                     axis=0)
         labels_train = np.concatenate((labels_train0, 
-                                        labels_train1), 
+                                        labels_train1, 
+                                        labels_train2,
+                                        labels_train3,
+                                        labels_train4,
+                                        labels_train5,
+                                        labels_train6, 
+                                        labels_train7,
+                                        labels_train8,
+                                        labels_train9), 
                                     axis=0)
-        train_imgs = train_imgs0 + train_imgs1
+        train_imgs = train_imgs0 + train_imgs1 + train_imgs2 + train_imgs3 + train_imgs4 + train_imgs5 + train_imgs6 + train_imgs7 + train_imgs8 +train_imgs9
 
         # initialize test subsets with images of digits from digits_test folder
         pixels_test, labels_test, test_imgs = self.load_digits(path='digits_8x8')
