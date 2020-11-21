@@ -19,18 +19,18 @@ class MnistCustomDigits:
         """
 
         # Initialize test subsets of images 
-        pixels_train0, labels_train0, train_imgs0 = self.load_digits(path='0_8x8', label='0')
-        pixels_train1, labels_train1, train_imgs1 = self.load_digits(path='1_8x8', label='1')
-        pixels_train2, labels_train2, train_imgs2 = self.load_digits(path='2_8x8', label='2')
-        pixels_train3, labels_train3, train_imgs3 = self.load_digits(path='3_8x8', label='3')
-        pixels_train4, labels_train4, train_imgs4 = self.load_digits(path='4_8x8', label='4')
-        pixels_train5, labels_train5, train_imgs5 = self.load_digits(path='5_8x8', label='5')
-        pixels_train6, labels_train6, train_imgs6 = self.load_digits(path='6_8x8', label='6')
-        pixels_train7, labels_train7, train_imgs7 = self.load_digits(path='7_8x8', label='7')
-        pixels_train8, labels_train8, train_imgs8 = self.load_digits(path='8_8x8', label='8')
-        pixels_train9, labels_train9, train_imgs9 = self.load_digits(path='9_8x8', label='9')
+        pixels_train0, labels_train0, train_imgs0 = self.load_digits(path='train/0_8x8', label='0')
+        pixels_train1, labels_train1, train_imgs1 = self.load_digits(path='train/1_8x8', label='1')
+        pixels_train2, labels_train2, train_imgs2 = self.load_digits(path='train/2_8x8', label='2')
+        pixels_train3, labels_train3, train_imgs3 = self.load_digits(path='train/3_8x8', label='3')
+        pixels_train4, labels_train4, train_imgs4 = self.load_digits(path='train/4_8x8', label='4')
+        pixels_train5, labels_train5, train_imgs5 = self.load_digits(path='train/5_8x8', label='5')
+        pixels_train6, labels_train6, train_imgs6 = self.load_digits(path='train/6_8x8', label='6')
+        pixels_train7, labels_train7, train_imgs7 = self.load_digits(path='train/7_8x8', label='7')
+        pixels_train8, labels_train8, train_imgs8 = self.load_digits(path='train/8_8x8', label='8')
+        pixels_train9, labels_train9, train_imgs9 = self.load_digits(path='train/9_8x8', label='9')
                 
-        # Concatenate pixels, labels and imgs 
+        # Concatenate pixels, labels and imgs for test dataset
         pixels_train = np.concatenate((pixels_train0, 
                                         pixels_train1,
                                         pixels_train2,
@@ -54,10 +54,44 @@ class MnistCustomDigits:
                                         labels_train9), 
                                     axis=0)
         train_imgs = train_imgs0 + train_imgs1 + train_imgs2 + train_imgs3 + train_imgs4 + train_imgs5 + train_imgs6 + train_imgs7 + train_imgs8 +train_imgs9
-
-        # initialize test subsets with images of digits from digits_test folder
-        pixels_test, labels_test, test_imgs = self.load_digits(path='digits_8x8')
+                
+        # initialize test subsets 
+        pixels_test0, labels_test0, test_imgs0 = self.load_digits(path='test/0_8x8', label='0')
+        pixels_test1, labels_test1, test_imgs1 = self.load_digits(path='test/1_8x8', label='1')
+        pixels_test2, labels_test2, test_imgs2 = self.load_digits(path='test/2_8x8', label='2')
+        pixels_test3, labels_test3, test_imgs3 = self.load_digits(path='test/3_8x8', label='3')
+        pixels_test4, labels_test4, test_imgs4 = self.load_digits(path='test/4_8x8', label='4')
+        pixels_test5, labels_test5, test_imgs5 = self.load_digits(path='test/5_8x8', label='5')
+        pixels_test6, labels_test6, test_imgs6 = self.load_digits(path='test/6_8x8', label='6')
+        pixels_test7, labels_test7, test_imgs7 = self.load_digits(path='test/7_8x8', label='7')
+        pixels_test8, labels_test8, test_imgs8 = self.load_digits(path='test/8_8x8', label='8')
+        pixels_test9, labels_test9, test_imgs9 = self.load_digits(path='test/9_8x8', label='9')
         
+        # Concatenate pixels, labels and imgs for train dataset
+        pixels_test = np.concatenate((pixels_test0, 
+                                        pixels_test1,
+                                        pixels_test2,
+                                        pixels_test3,
+                                        pixels_test4,
+                                        pixels_test5,
+                                        pixels_test6, 
+                                        pixels_test7,
+                                        pixels_test8,
+                                        pixels_test9), 
+                                    axis=0)
+        labels_test = np.concatenate((labels_test0, 
+                                        labels_test1, 
+                                        labels_test2,
+                                        labels_test3,
+                                        labels_test4,
+                                        labels_test5,
+                                        labels_test6, 
+                                        labels_test7,
+                                        labels_test8,
+                                        labels_test9), 
+                                    axis=0)
+        test_imgs = test_imgs0 + test_imgs1 + test_imgs2 + test_imgs3 + test_imgs4 + test_imgs5 + test_imgs6 + test_imgs7 + test_imgs8 +test_imgs9
+
         # We learn the digits on the first half of the digits
         classifier.fit(pixels_train, labels_train)
 
@@ -65,13 +99,28 @@ class MnistCustomDigits:
         predicted = classifier.predict(pixels_test)
 
         _, axes = plt.subplots(2, 4)
-        images_and_labels = list(zip(train_imgs[:len(train_imgs) // 2], labels_train))
+        train_dataset = list(zip(train_imgs[:len(train_imgs) // 2], labels_train))
+        images_and_labels = []
+        for i in range(len(train_dataset)): 
+            if i % 10 == 0: 
+                images_and_labels.append(train_dataset[i])
+        
         for ax, (image, label) in zip(axes[0, :], images_and_labels[:4]):
             ax.set_axis_off()
             ax.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
             ax.set_title('Training: %i' % label)
         
-        images_and_predictions = list(zip(test_imgs[len(test_imgs) // 2:], predicted))
+        """
+        WARNING:
+        Labels represent pictures incorrectly: 
+        pictures start from 5 but labels start from 0. 
+        """
+        test_dataset = list(zip(test_imgs[len(test_imgs) // 2:], predicted))
+        images_and_predictions = []
+        for i in range(len(test_dataset)): 
+            if i % 10 == 0: 
+                images_and_predictions.append(test_dataset[i])
+        
         for ax, (image, prediction) in zip(axes[1, :], images_and_predictions[:4]):
             ax.set_axis_off()
             ax.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
@@ -88,11 +137,14 @@ class MnistCustomDigits:
 
         plt.show()
     
+    def load_dataset(self):
+        pass
 
-    # Load digits for test
+    # Load a class of digits for test
     def load_digits(self, path, label='all'):
         """
-        Pass name of folder as path variable. 
+        This function takes name of the folder as `path` variable and returns
+        `pixels`, `labels` and `imgs` as numpy arrays for a class of images. 
         """
 
         import os
@@ -168,7 +220,7 @@ class MnistCustomDigits:
         #pictures_test = np.asarray(pictures_test)
         labels = np.asarray(labels)
         
-        os.chdir('../../../console')
+        os.chdir('../../../../console')
         
         return pixels, labels, imgs
     
