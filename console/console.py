@@ -1,16 +1,4 @@
 """
-CONSOLE APP
-When this app starts, user can enter some commands (for gps, 
-gyro, fuzzy controller, computer vision etc). 
-When user writes some command, the program asks him or her 
-if it's okay to use default parameters.
-
-All modules can be called by:
-    sdc module --mode
-All information can be called by:
-    sdc -info
-    sdc -help
-
 NOTE: 
 You can set parameters of the modules directly with the following script: 
     import sys
@@ -23,6 +11,21 @@ import info
 import invoke
 
 if __name__ == '__main__':
+    """
+    CONSOLE APP
+
+    When this app starts, user can enter some commands (for gps, 
+    gyro, fuzzy controller, computer vision etc). 
+    When user writes some command, the program asks him or her 
+    if it's okay to use default parameters.
+
+    All modules can be called by:
+        sdc module --mode
+    All information can be called by:
+        sdc -info
+        sdc -help
+    """
+
     print()
     print('Welcome to SDC console!')
     

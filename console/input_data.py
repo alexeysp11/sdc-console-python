@@ -1,14 +1,14 @@
-"""
-In this source file I am going to ask user about setting default parameters
-and then call initialize function from velocity module. 
-"""
-
 import sys, traceback
 sys.path.append('../env')
 from velocity import Velocity
 
 
 def custom_or_default_data(dimension, init_velocity, mode, is_accel=False):
+    """
+    Ask user if parameters should be default. 
+    
+    Then invoke velocity module `Velocity`. 
+    """
     print(f'{dimension}-dimensional space'.upper())
 
     while(True):

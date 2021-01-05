@@ -50,6 +50,7 @@ Moreover, this kind of information can't be obtained using the so-called traditi
 A well-established solution for **computer vision** is currently **neural networks**. So in this app I try to build my own neural networks for handwritten digits recognition and road signs recognition. 
 
 ## How to run this app
+
 In order to run this app, you need to enter the following commands into your terminal: 
 ```
 git clone https://github.com/alexeysp11/sdc-console-python.git
@@ -65,6 +66,7 @@ Welcome to SDC console!
 And you just need to write some commands described in the next section. 
 
 ## Commands
+
 Now I'll briefly talk about the commands you can use in this application.
 
 Commands are entered as follows:
@@ -125,7 +127,6 @@ Main modules:
     gps             | GPS
     gyro            | Gyroscope
     accel           | Accelerometer
-    lidar           | Lidar
     fuzzy           | Fuzzy Controller
     nn              | Neural Network
     test            | Unit-tests for each module

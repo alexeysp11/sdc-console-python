@@ -1,8 +1,9 @@
-"""
-Environment settings.
-"""
+
 
 def setting(mode, dim):
+    """
+    Set default configurations for GPS module.
+    """
     if mode == 'p':
         if dim == 1:
             velocity = 0.0

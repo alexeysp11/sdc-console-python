@@ -1,18 +1,12 @@
-"""
-Fuzzy controller takes dstnce2prev_pt and dstnce2nxt_pt as the input varibles
-and returns two values of speed as the output variables.
-One of them is defined by dstnce2prev_pt, another one is defined by 
-dstnce2nxt_pt.
-First output variable might be called as speed_prev_pt, the second one 
-as speed_nxt_pt.
-"""
-
 import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
 
 class FuzzyController:
+    """
+    This class takes in `distance` as an input and returns `speed` as an output. 
+    """
     def __init__(self):
         # Declaire a domain of linguistic variables 
         self.distance = ctrl.Antecedent(np.arange(0, 101, 1), 'Distance (m)')

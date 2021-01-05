@@ -3,7 +3,19 @@ import matplotlib.pyplot as plt
 
 
 class CallFuzzy:
+    """
+    This class allows you to configure interaction with `FuzzyController` class 
+    from the console application. 
+    
+    `FuzzyController` is tend to be  the saperate part of the program, 
+    so you can reuse `FuzzyController` class in the similar program (for example, 
+    if you modelling some movements of a car). 
+    """
     def call(self):
+        """
+        Call `FuzzyController` from the console application.
+        """
+
         # Declare instances of considered classes
         fc = fuzzy_controller.FuzzyController()
         self = CallFuzzy()
@@ -32,8 +44,10 @@ class CallFuzzy:
 
 
     def view_variables(self, fc, entered_distance):
-        # show linguistic variables' domain
-        # MAKE ALL GRAPHS IN ONE WINDOW! 
+        """
+        Show linguistic variables' domain (`distance` as an input and `speed` as 
+        an output). 
+        """
         fc.distance.view()
         fc.speed.view()
 
@@ -47,8 +61,11 @@ class CallFuzzy:
         fc.speed.view(sim=self.speed_simulation)
 
 
-    # Relationship between distance and speed
     def draw_plot(self, speed_axis, distance_axis):
+        """
+        Draw an initial relationship between `distance` and `speed` initiated in 
+        the rulebase of `FuzzyController` class. 
+        """
         # plotting the points
         plt.plot(speed_axis, distance_axis)
         
@@ -63,16 +80,23 @@ class CallFuzzy:
         plt.show() 
 
 
-    # Transfer distance to speed 
     def rel_dstnce_speed(self, fuzzy_controller):
+        """
+        Print out and plot the relationship between `distance` and `speed` 
+        initiated in the rulebase. 
+
+        Plot a diagram of the relationship by calling `draw_plot()` method. 
+        """
         distance = 0
         max_distance = 100
         step = 1.25
+        
         # Declare empty lists named array_distance and array_speed
         array_distance = []
         array_speed = []
         i = 0
         number_of_elements = int(max_distance / step)
+        
         # Create arrays 
         for i in range(number_of_elements + 1):
             speed = fuzzy_controller.count_speed(distance)
@@ -80,16 +104,25 @@ class CallFuzzy:
             array_speed.append(speed)
             i += 1
             distance = distance + step
+        
         # Print out a table of distance and speed
         print('Distance (m)\tSpeed (km/h)')
         i = 0 
         for i in range(number_of_elements + 1):
             print(str(array_distance[i]) + '\t\t' + str(array_speed[i]))
+        
         self.draw_plot(array_speed, array_distance)
 
 
-    # Write distance and get speed 
     def get_distance_set_speed(self, fc):
+        """
+        This method allows you to write value of `distance` in the console and 
+        get value of `speed` corresponding to the `distance`. 
+
+        Variable `distance` is measured in meters, and `speed` is measured 
+        in km/h.
+        """
+
         # get a distance 
         distance = input('Distance (m): ')
 

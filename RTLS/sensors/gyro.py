@@ -22,8 +22,8 @@ import numpy as np
 
 class GyroKF():
     """
-    Imagine that we have some yaw angle of some non-moving car, 
-    here we pre-process gyro data before we pass it to the kf 
+    We have `yaw` angle of some non-moving car, so
+    here we pre-process gyro data before we pass it to the `KalmanFilter` 
     processing algorithm. 
     
     I decided that in this method I just initialize truth_yaw, 

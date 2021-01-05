@@ -1,6 +1,4 @@
 """
-Test for Kalman filter accelerometer. 
-
 Here we should define uniform and non-uniform acceleration classes, 
 then methods of these classes should be invoke in moving_car. 
 
@@ -20,6 +18,9 @@ import matplotlib.pyplot as plt
 from tabulate import tabulate
 
 class Accelerometer():
+    """
+    This class implements acceleration model. 
+    """
     def run():
         pass
     

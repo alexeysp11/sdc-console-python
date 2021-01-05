@@ -1,6 +1,6 @@
 # Cache files
 .vscode
-computer_vision/MNIST/__pycache__
+computer_vision/mnist/__pycache__
 computer_vision/road_signs/__pycache__
 console/__pycache__
 env/__pycache__
@@ -8,4 +8,4 @@ fuzzy_controller/__pycache__
 RTLS/__pycache__
 
 # Notes and Docs snippets
-Notes.txt
+Docs

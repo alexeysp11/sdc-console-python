@@ -8,22 +8,20 @@ sys.path.append('../RTLS')
 sys.path.append('../DATMO')
 sys.path.append('../fuzzy_controller')
 sys.path.append('../computer_vision')
-import environment
+import default_config
 import input_data
 from sensors.imu import ImuKF
 from sensors.gps import GpsKF
 from sensors.gyro import GyroKF
 from sensors.accelerometer import Accelerometer
-from lidar import Lidar
 from call_fc import CallFuzzy
-from MNIST import mnist_default
 from MNIST.mnist_custom import MnistCustomDigits
 from road_signs import signs_default
 
 
 def imu(mode):
     try:
-        velocity, is_accel = environment.setting(mode)
+        velocity, is_accel = default_config.setting(mode)
         
         imu_1d = ImuKF()
         init_data = input_data.custom_or_default_data(dimension=1, 
@@ -46,8 +44,8 @@ def imu(mode):
 
 def gps(mode):
     try:
-        velocity1d, is_accel = environment.setting(mode, 1)
-        velocity2d, is_accel = environment.setting(mode, 2)
+        velocity1d, is_accel = default_config.setting(mode, 1)
+        velocity2d, is_accel = default_config.setting(mode, 2)
         
         kf_1d = GpsKF()
         init_data = input_data.custom_or_default_data(dimension=1, 
@@ -93,16 +91,6 @@ def accel():
         traceback.print_tb(e.__traceback__)
 
 
-def lidar():
-    try:
-        lidar = Lidar()
-        lidar.call_lidar()
-    
-    except Exception as e:
-        print('Exception: '.upper(), e)
-        traceback.print_tb(e.__traceback__)
-
-
 def neural_network(mode, default):
     try:
         """
@@ -115,7 +103,7 @@ def neural_network(mode, default):
         """
         
         if mode == 'mnist' and default == True:
-            mnist_default.run()
+            pass
         
         elif mode == 'mnist' and default == False:
             mnist_custom = MnistCustomDigits()

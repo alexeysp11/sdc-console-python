@@ -8,7 +8,6 @@ def commands():
     gps             | GPS 
     gyro            | Gyroscope 
     accel           | Accelerometer
-    lidar           | Lidar
     fuzzy           | Fuzzy Controller 
     nn              | Neural Network 
     test            | Unit-tests for each module

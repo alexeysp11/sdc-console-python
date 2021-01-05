@@ -1,6 +1,9 @@
 # console 
+
 `console.py` is an entry point of this program.
+
 ## How this module works
+
 ```
 Welcome to SDC console!
 >> sdc
@@ -21,7 +24,6 @@ Main modules:
     gps             | GPS
     gyro            | Gyroscope
     accel           | Accelerometer
-    lidar           | Lidar
     fuzzy           | Fuzzy Controller
     nn              | Neural Network
     test            | Unit-tests for each module
@@ -34,7 +36,6 @@ Main modules:
     gps             | GPS
     gyro            | Gyroscope
     accel           | Accelerometer
-    lidar           | Lidar
     fuzzy           | Fuzzy Controller
     nn              | Neural Network
     test            | Unit-tests for each module
