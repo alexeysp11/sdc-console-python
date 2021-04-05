@@ -33,8 +33,11 @@ import numpy as np
 
 class GpsKF():
     def callkf(self, kf=kf, dimension=1, init_data=0):
+        """
+        Invokes Kalman filter for 1D and 2D and plots graphs.  
+        """
         # usually error of GPS receiver is about 50 meters
-        abs_error = 50 
+        abs_error = 50.0
         
         try:
             sensor = Sensor()
@@ -47,20 +50,24 @@ class GpsKF():
                 kf_1d = kf(obs, error=abs_error)
                 est = kf_1d.estimate()
                 
-                # print out results and plot all
-                self.mean, self.median = sensor.print_out(obs, est, init_data)
+                # print out results and plot all. 
+                self.mean, self.median, est_error = sensor.print_out(obs, est, 
+                    init_data)
                 
-                sensor.plot(obs, est, init_data, dim=dimension, sensor='gps')
+                sensor.plot(obs=obs, est=est, est_error=est_error,  
+                    init_data=init_data, dim=dimension, sensor='gps')
             
             if dimension == 2: 
                 # initialize an instance of KalmanFilter and estimate
                 kf_2d = kf(obs, error=abs_error)
                 est = kf_2d.estimate()
                 
-                # print out results and plot all
-                self.mean, self.median = sensor.print_out(obs, est, init_data)
+                # print out results and plot all. 
+                self.mean, self.median, est_error = sensor.print_out(obs, est, 
+                    init_data)
                 
-                sensor.plot(obs, est, init_data, dim=dimension, sensor='gps') 
+                sensor.plot(obs=obs, est=est, est_error=est_error,  
+                    init_data=init_data, dim=dimension, sensor='gps') 
         
         except Exception as e:
             print('Exception: '.upper(), e)

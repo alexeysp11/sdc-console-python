@@ -1,101 +1,57 @@
 import numpy as np 
 
-class MnistCustomDigits:
-    def run(self):
+class HandwrittenDigits:
+    """
+    Handwritten digits recognition. 
+
+    Algorithms: 
+    - K-Nearest Neighbors (KNN); 
+    - Support Vector Machine (SVM); 
+    - Logistic regression; 
+    - Multi-Layer Perceptron (MLP). 
+    """
+
+    def run(self, algorithm='compare'):
+        """
+        Pass one of the following values as `algorithm` variable into the 
+        function in order to run one of the following algorithms: 
+        - `knn` = K-Nearest Neighbors (KNN); 
+        - `svm` = Support Vector Machine (SVM); 
+        - `lr` = Logistic regression; 
+        - `mpl` = Multi-Layer Perceptron (MLP); 
+        - `compare` = Compare all the algorithms.
+        """
+
         import matplotlib.pyplot as plt
         
-        # Import datasets, classifiers and performance metrics
-        from sklearn import datasets, svm, metrics
+        # Import datasets, classifiers and performance metrics.
+        from sklearn import svm, metrics
         from sklearn.model_selection import train_test_split
         from sklearn.neural_network import MLPClassifier
-        
-        # Create a classifier: a support vector classifier
-        classifier = svm.SVC(gamma=0.001)
-        
-        # Create a classifier: multi-layer perceptron (MLP) algorithm
-        """
-        clf = MLPClassifier(solver='lbfgs', alpha=1e-5,
-                            hidden_layer_sizes=(5, 2), random_state=1)
-        """
 
-        # Initialize test subsets of images 
-        pixels_train0, labels_train0, train_imgs0 = self.load_digits(path='train/0_8x8', label='0')
-        pixels_train1, labels_train1, train_imgs1 = self.load_digits(path='train/1_8x8', label='1')
-        pixels_train2, labels_train2, train_imgs2 = self.load_digits(path='train/2_8x8', label='2')
-        pixels_train3, labels_train3, train_imgs3 = self.load_digits(path='train/3_8x8', label='3')
-        pixels_train4, labels_train4, train_imgs4 = self.load_digits(path='train/4_8x8', label='4')
-        pixels_train5, labels_train5, train_imgs5 = self.load_digits(path='train/5_8x8', label='5')
-        pixels_train6, labels_train6, train_imgs6 = self.load_digits(path='train/6_8x8', label='6')
-        pixels_train7, labels_train7, train_imgs7 = self.load_digits(path='train/7_8x8', label='7')
-        pixels_train8, labels_train8, train_imgs8 = self.load_digits(path='train/8_8x8', label='8')
-        pixels_train9, labels_train9, train_imgs9 = self.load_digits(path='train/9_8x8', label='9')
-                
-        # Concatenate pixels, labels and imgs for test dataset
-        pixels_train = np.concatenate((pixels_train0, 
-                                        pixels_train1,
-                                        pixels_train2,
-                                        pixels_train3,
-                                        pixels_train4,
-                                        pixels_train5,
-                                        pixels_train6, 
-                                        pixels_train7,
-                                        pixels_train8,
-                                        pixels_train9), 
-                                    axis=0)
-        labels_train = np.concatenate((labels_train0, 
-                                        labels_train1, 
-                                        labels_train2,
-                                        labels_train3,
-                                        labels_train4,
-                                        labels_train5,
-                                        labels_train6, 
-                                        labels_train7,
-                                        labels_train8,
-                                        labels_train9), 
-                                    axis=0)
-        train_imgs = train_imgs0 + train_imgs1 + train_imgs2 + train_imgs3 + train_imgs4 + train_imgs5 + train_imgs6 + train_imgs7 + train_imgs8 +train_imgs9
-                
-        # initialize test subsets 
-        pixels_test0, labels_test0, test_imgs0 = self.load_digits(path='test/0_8x8', label='0')
-        pixels_test1, labels_test1, test_imgs1 = self.load_digits(path='test/1_8x8', label='1')
-        pixels_test2, labels_test2, test_imgs2 = self.load_digits(path='test/2_8x8', label='2')
-        pixels_test3, labels_test3, test_imgs3 = self.load_digits(path='test/3_8x8', label='3')
-        pixels_test4, labels_test4, test_imgs4 = self.load_digits(path='test/4_8x8', label='4')
-        pixels_test5, labels_test5, test_imgs5 = self.load_digits(path='test/5_8x8', label='5')
-        pixels_test6, labels_test6, test_imgs6 = self.load_digits(path='test/6_8x8', label='6')
-        pixels_test7, labels_test7, test_imgs7 = self.load_digits(path='test/7_8x8', label='7')
-        pixels_test8, labels_test8, test_imgs8 = self.load_digits(path='test/8_8x8', label='8')
-        pixels_test9, labels_test9, test_imgs9 = self.load_digits(path='test/9_8x8', label='9')
-        
-        # Concatenate pixels, labels and imgs for train dataset
-        pixels_test = np.concatenate((pixels_test0, 
-                                        pixels_test1,
-                                        pixels_test2,
-                                        pixels_test3,
-                                        pixels_test4,
-                                        pixels_test5,
-                                        pixels_test6, 
-                                        pixels_test7,
-                                        pixels_test8,
-                                        pixels_test9), 
-                                    axis=0)
-        labels_test = np.concatenate((labels_test0, 
-                                        labels_test1, 
-                                        labels_test2,
-                                        labels_test3,
-                                        labels_test4,
-                                        labels_test5,
-                                        labels_test6, 
-                                        labels_test7,
-                                        labels_test8,
-                                        labels_test9), 
-                                    axis=0)
-        test_imgs = test_imgs0 + test_imgs1 + test_imgs2 + test_imgs3 + test_imgs4 + test_imgs5 + test_imgs6 + test_imgs7 + test_imgs8 +test_imgs9
+        # Create a classifier depending on `algorithm` value. 
+        if algorithm == 'knn': 
+            pass
+        elif algorithm == 'svm':
+            # support vector classifier.
+            classifier = svm.SVC(gamma=0.001)
+        elif algorithm == 'lr':
+            pass
+        elif algorithm == 'mlp':
+            # multi-layer perceptron (MLP) algorithm.
+            classifier = MLPClassifier(solver='lbfgs', alpha=1e-5,
+                                hidden_layer_sizes=(5, 2), random_state=1)
+        elif algorithm == 'compare': 
+            pass
 
-        # We learn the digits on the first half of the digits
+        train, test = self.load_dataset()
+
+        # Unpack train and test lists. 
+        pixels_train, labels_train, train_imgs = train[0], train[1], train[2]
+        pixels_test, labels_test, test_imgs = test[0], test[1], test[2]
+        
+        # Fit and predict. 
         classifier.fit(pixels_train, labels_train)
-
-        # Now predict the value of the digit on the second half:
         predicted = classifier.predict(pixels_test)
 
         _, axes = plt.subplots(2, 4)
@@ -137,14 +93,106 @@ class MnistCustomDigits:
 
         plt.show()
     
+    
     def load_dataset(self):
-        pass
+        """
+        Load dataset of handwritten digits. 
+
+        Returns `train` and `test` lists:
+        ```
+        train = [pixels_train, labels_train, train_imgs]
+        test = [pixels_test, labels_test, test_imgs]
+        ```
+        """
+
+        # Initialize test subsets of images 
+        pixels_train0, labels_train0, train_imgs0 = self.load_digits(path='train/0_8x8', label='0')
+        pixels_train1, labels_train1, train_imgs1 = self.load_digits(path='train/1_8x8', label='1')
+        pixels_train2, labels_train2, train_imgs2 = self.load_digits(path='train/2_8x8', label='2')
+        pixels_train3, labels_train3, train_imgs3 = self.load_digits(path='train/3_8x8', label='3')
+        pixels_train4, labels_train4, train_imgs4 = self.load_digits(path='train/4_8x8', label='4')
+        pixels_train5, labels_train5, train_imgs5 = self.load_digits(path='train/5_8x8', label='5')
+        pixels_train6, labels_train6, train_imgs6 = self.load_digits(path='train/6_8x8', label='6')
+        pixels_train7, labels_train7, train_imgs7 = self.load_digits(path='train/7_8x8', label='7')
+        pixels_train8, labels_train8, train_imgs8 = self.load_digits(path='train/8_8x8', label='8')
+        pixels_train9, labels_train9, train_imgs9 = self.load_digits(path='train/9_8x8', label='9')
+                
+        # Concatenate pixels, labels and imgs for test dataset
+        pixels_train = np.concatenate((pixels_train0, 
+                                        pixels_train1,
+                                        pixels_train2,
+                                        pixels_train3,
+                                        pixels_train4,
+                                        pixels_train5,
+                                        pixels_train6, 
+                                        pixels_train7,
+                                        pixels_train8,
+                                        pixels_train9), 
+                                    axis=0)
+        labels_train = np.concatenate((labels_train0, 
+                                        labels_train1, 
+                                        labels_train2,
+                                        labels_train3,
+                                        labels_train4,
+                                        labels_train5,
+                                        labels_train6, 
+                                        labels_train7,
+                                        labels_train8,
+                                        labels_train9), 
+                                    axis=0)
+        train_imgs = train_imgs0 + train_imgs1 + train_imgs2 + train_imgs3 + train_imgs4 + train_imgs5 + train_imgs6 + train_imgs7 + train_imgs8 +train_imgs9
+                
+        # Initialize test subsets. 
+        pixels_test0, labels_test0, test_imgs0 = self.load_digits(path='test/0_8x8', label='0')
+        pixels_test1, labels_test1, test_imgs1 = self.load_digits(path='test/1_8x8', label='1')
+        pixels_test2, labels_test2, test_imgs2 = self.load_digits(path='test/2_8x8', label='2')
+        pixels_test3, labels_test3, test_imgs3 = self.load_digits(path='test/3_8x8', label='3')
+        pixels_test4, labels_test4, test_imgs4 = self.load_digits(path='test/4_8x8', label='4')
+        pixels_test5, labels_test5, test_imgs5 = self.load_digits(path='test/5_8x8', label='5')
+        pixels_test6, labels_test6, test_imgs6 = self.load_digits(path='test/6_8x8', label='6')
+        pixels_test7, labels_test7, test_imgs7 = self.load_digits(path='test/7_8x8', label='7')
+        pixels_test8, labels_test8, test_imgs8 = self.load_digits(path='test/8_8x8', label='8')
+        pixels_test9, labels_test9, test_imgs9 = self.load_digits(path='test/9_8x8', label='9')
+        
+        # Concatenate pixels, labels and imgs for train dataset. 
+        pixels_test = np.concatenate((pixels_test0, 
+                                        pixels_test1,
+                                        pixels_test2,
+                                        pixels_test3,
+                                        pixels_test4,
+                                        pixels_test5,
+                                        pixels_test6, 
+                                        pixels_test7,
+                                        pixels_test8,
+                                        pixels_test9), 
+                                    axis=0)
+        labels_test = np.concatenate((labels_test0, 
+                                        labels_test1, 
+                                        labels_test2,
+                                        labels_test3,
+                                        labels_test4,
+                                        labels_test5,
+                                        labels_test6, 
+                                        labels_test7,
+                                        labels_test8,
+                                        labels_test9), 
+                                    axis=0)
+        test_imgs = test_imgs0 + test_imgs1 + test_imgs2 + test_imgs3 + test_imgs4 + test_imgs5 + test_imgs6 + test_imgs7 + test_imgs8 +test_imgs9
+
+        # Initialize train and test lists. 
+        train = [pixels_train, labels_train, train_imgs]
+        test = [pixels_test, labels_test, test_imgs]
+
+        return train, test
+
 
     # Load a class of digits for test
     def load_digits(self, path, label='all'):
         """
-        This function takes name of the folder as `path` variable and returns
-        `pixels`, `labels` and `imgs` as numpy arrays for a class of images. 
+        This function takes name of the folder as `path` variable. 
+        
+        Returns `pixels`, `labels` and `imgs` as numpy arrays for a class 
+        of images. 
         """
 
         import os

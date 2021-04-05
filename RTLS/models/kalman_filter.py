@@ -1,13 +1,13 @@
-"""
-KALMAN FILTER WITH ADJUSTED PROCESS VARIANCE
-
-I need to make process_var change its value 
-depending on that how large apriori_error is. 
-"""
-
 import numpy as np
 
 class KalmanFilter:
+    """
+    KALMAN FILTER WITH ADJUSTED PROCESS VARIANCE
+
+    `process_var` changes its value depending on that 
+    how large `apriori_error` is. 
+    """
+
     def __init__(self, observations, error):
         self.observations = observations
         self.error = error
@@ -19,7 +19,7 @@ class KalmanFilter:
         
         time_sec = len(observations)
         array_size = observations.shape
-        sigma = abs_error / 2 
+        sigma = abs_error * 2 
         
         # allocate space for arrays
         aposteri_est = np.ones(array_size) * observations[0]
@@ -45,7 +45,7 @@ class KalmanFilter:
             """
             
             # time update
-            apriori_est[k] = aposteri_est[k-1]
+            apriori_est[k] = aposteri_est[k-1] # here you can add accelerometer and tachometer data (apriori_est[k] = aposteri_est[k-1] + tachometer*dt + 1/2*accelerometer * dt**2). 
             
             # get number of columns
             cols = len(aposteri_error[0,:])
@@ -76,10 +76,10 @@ class KalmanFilter:
             # check if every condition is correct!
             if cols == 2:
                 """
-                If aposteri_error[k-1, x] < aposteri_error[k-2, x] then 
-                apriori_error[k, x] = aposteri_error[k-1, x] - process_var[k-1, x].
-                If aposteri_error[k-1, y] < aposteri_error[k-2, y] then 
-                apriori_error[k, y] = aposteri_error[k-1, y] - process_var[k-1, y].
+                If `aposteri_error[k-1, x] < aposteri_error[k-2, x]` then 
+                `apriori_error[k, x] = aposteri_error[k-1, x] - process_var[k-1, x]`.
+                If `aposteri_error[k-1, y] < aposteri_error[k-2, y]` then 
+                `apriori_error[k, y] = aposteri_error[k-1, y] - process_var[k-1, y]`.
                 """
                 
                 if k != 1:

@@ -15,7 +15,7 @@ from sensors.gps import GpsKF
 from sensors.gyro import GyroKF
 from sensors.accelerometer import Accelerometer
 from call_fc import CallFuzzy
-from MNIST.mnist_custom import MnistCustomDigits
+from MNIST.handwritten_digits import HandwrittenDigits
 from road_signs import signs_default
 
 
@@ -91,7 +91,7 @@ def accel():
         traceback.print_tb(e.__traceback__)
 
 
-def neural_network(mode, default):
+def neural_network(mode, algorithm):
     try:
         """
         There is exception handling in if/else block too (programmer can set 
@@ -102,20 +102,17 @@ def neural_network(mode, default):
         changes or think out how to use try/except in this situation.
         """
         
-        if mode == 'mnist' and default == True:
-            pass
+        if mode == 'mnist':
+            mnist_custom = HandwrittenDigits()
+            mnist_custom.run(algorithm)
         
-        elif mode == 'mnist' and default == False:
-            mnist_custom = MnistCustomDigits()
-            mnist_custom.run()
-        
-        elif mode == 'signs' and default == True:
+        elif mode == 'signs':
             signs_default.run()
         
         else:
             print('Info for developer:'.upper())
-            print('''Incorrect mode or default values in: 
-            neural_network(mode, default) in invoke.py''')
+            print('''Incorrect mode or algorithm values in: 
+            neural_network(mode, algorithm) in invoke.py''')
     
     except Exception as e:
         print('Exception: '.upper(), e)

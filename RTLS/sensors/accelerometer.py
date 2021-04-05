@@ -12,7 +12,6 @@ velocity and acceleration models.
 """
 
 import sys
-from models.kf_accelerometer import KalmanFilter
 import numpy as np
 import matplotlib.pyplot as plt
 from tabulate import tabulate
@@ -246,33 +245,7 @@ class NonUniformAccel(Accelerometer):
 
 
 def main():
-    
-    # CALL KALMAN FILTER FOR 1D SPACE
-    # input initial data
-    kftest_1d = Accelerometer()
-    
-    # get initial data and initialize an instance of KalmanFilter 
-    truth_value, init_guess, n_iter = kftest_1d.initdata_1d()
-    kf_1d = kf_accelerometer.KalmanFilter(truth_value, init_guess, n_iter)
-
-    # estimate, print out results and plot all 
-    obs, est = kf_1d.estimate()
-    kftest_1d.print_out(obs, est, kf_1d)
-    kftest_1d.plot_1d(obs, est, kf_1d)
-    
-    
-    # CALL KALMAN FILTER FOR 2D SPACE
-    # initialize an instance of Accelerometer
-    kftest_2d = Accelerometer()
-    
-    # get initial data and initialize an instance of KalmanFilter 
-    truth_value, init_guess, n_iter = kftest_2d.initdata_2d()
-    kf_2d = kf_accelerometer.KalmanFilter(truth_value, init_guess, n_iter)
-    
-    # estimate, print out results and plot all 
-    obs, est = kf_2d.estimate()
-    kftest_2d.print_out(obs, est, kf_2d)
-    kftest_2d.plot_2d(obs, est, kf_2d)
+    pass
 
 
 if __name__ == '__main__':

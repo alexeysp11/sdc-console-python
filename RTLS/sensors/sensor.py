@@ -35,9 +35,18 @@ class Sensor():
             return None
     
     
-    def plot(self, obs, est, init_data, dim, sensor, animation=False):
-        # add animation and conclusions for overall medians!
-        # define labels of each axis for each sensor!
+    def plot(self, obs, est, est_error, init_data, dim, sensor, animation=False):
+        """
+        Responsible for visual representation of position estimation. 
+
+        For 1D space, plots position vs time relationship and histograms 
+        of measurement and estimation errors distribution. 
+        
+        For 2D space, plots 2D map, position vs time relationship and 
+        histograms of measurement and estimation errors distribution. 
+        """
+
+        # define labels of each axis for each sensor. 
         if sensor == 'gps': 
             truth_label = 'truth value'
             ylabel = 'Position (meters)'
@@ -45,6 +54,8 @@ class Sensor():
             truth_label = 'truth yaw'
             ylabel = 'Rotation (degrees)'
         
+        # plot map, position vs time relationship and histograms of error 
+        # distribution. 
         try:
             fig = plt.figure()
             
@@ -74,13 +85,32 @@ class Sensor():
                 trajectory in 2d space. 
                 """
                 
-                # map 
+                # 2D map 
                 mapping = fig.add_subplot(121)
                 mapping.plot(obs[:,0], obs[:,1],'k+', label='noisy measurements')
                 mapping.plot(est[:,0], est[:,1],'bo', label='a posteri estimate')
+
+                is_moving_X = False
+                is_moving_Y = False
+                observation_num = len(truth_value[:,0])
+
+                # check if position of a car does not change (for plotting a 
+                # point not a line in the case). 
+                for i in range(observation_num):
+                    # check if it is the last element. 
+                    if i == (observation_num - 1): 
+                        break
+                    
+                    # check if a car is moving on the x axis. 
+                    if truth_value[i,0] != truth_value[i+1,0]: 
+                        is_moving_X = True
+                    
+                    # check if a car is moving on the y axis. 
+                    if truth_value[i,1] != truth_value[i+1,1]: 
+                        is_moving_Y = True
                 
-                if len(truth_value[:,0]) == 1:
-                    # if the car is not moving
+                # if a car is not moving, position of a car should be represented by point. 
+                if (is_moving_X == False) and (is_moving_Y == False):  
                     mapping.plot(truth_value[:,0], truth_value[:,1], 'go', label='truth value')
                 else:
                     mapping.plot(truth_value[:,0], truth_value[:,1], 'g', label='truth value')
@@ -108,7 +138,17 @@ class Sensor():
                 plt.xlabel('Time (seconds)')
                 plt.ylabel('Position Y (meters)')
                 plt.grid()
-            
+
+            # histograms of error distribution. 
+            histograms = plt.figure()
+            if (dim == 1 and sensor == 'gps') or (dim == 2 and sensor == 'gyro'): 
+                plt.hist(est_error, edgecolor = 'black')
+            elif (dim == 2 and sensor == 'gps') or (dim == 3 and sensor == 'gyro'): 
+                hist_X = histograms.add_subplot(211)
+                hist_X.hist(est_error[:,0], edgecolor = 'black')
+                hist_Y = histograms.add_subplot(212)
+                hist_Y.hist(est_error[:,1], edgecolor = 'black')
+
             plt.show()
         
         except Exception as e:
@@ -177,7 +217,7 @@ class Sensor():
             
             print()
 
-            return mean, median
+            return mean, median, error
         
         except Exception as e:
             print('Exception: '.upper(), e)

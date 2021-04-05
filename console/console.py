@@ -89,14 +89,23 @@ if __name__ == '__main__':
             elif command == 'sdc nn':
                 info.neural_network()
 
-            elif command == 'sdc nn --mnist default':
-                invoke.neural_network(mode='mnist', default=True)
+            elif command == 'sdc nn --mnist knn':
+                invoke.neural_network(mode='mnist', algorithm='knn')
+
+            elif command == 'sdc nn --mnist svm':
+                invoke.neural_network(mode='mnist', algorithm='svm')
             
-            elif command == 'sdc nn --mnist custom':
-                invoke.neural_network(mode='mnist', default=False)
+            elif command == 'sdc nn --mnist lr':
+                invoke.neural_network(mode='mnist', algorithm='lr')
+
+            elif command == 'sdc nn --mnist mlp':
+                invoke.neural_network(mode='mnist', algorithm='mlp')
+
+            elif command == 'sdc nn --mnist compare':
+                invoke.neural_network(mode='mnist', algorithm='compare')
             
             elif command == 'sdc nn --signs':
-                invoke.neural_network(mode='signs', default=True)
+                invoke.neural_network(mode='signs', algorithm='svm')
             
             elif command == 'sdc fuzzy':
                 invoke.fuzzy()

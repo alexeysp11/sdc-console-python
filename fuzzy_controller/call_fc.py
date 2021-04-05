@@ -27,11 +27,17 @@ class CallFuzzy:
 
         while(True):
             command = input('Please, enter 1 or 2: ')
-            
+
             if command == '1':
                 # If you need to enter distance and get speed, run this function:
-                get_set = self.get_distance_set_speed(fc)
-                print(get_set)
+                distance, speed = self.get_distance_set_speed(fc)
+                
+                # show linguistic variables. 
+                self.view_variables(fc, distance)
+
+                # print out entered speed. 
+                print(f'Speed = {speed} km/h')
+                
                 break
             
             elif command == '2':
@@ -39,11 +45,15 @@ class CallFuzzy:
                 If you need to describe the relationship between distance and speed
                 in the graph, run this fuction: 
                 """
+
+                # show linguistic variables. 
+                #self.view_variables(fc)
+
                 self.rel_dstnce_speed(fc)
                 break
 
 
-    def view_variables(self, fc, entered_distance):
+    def view_variables(self, fc, entered_distance=None):
         """
         Show linguistic variables' domain (`distance` as an input and `speed` as 
         an output). 
@@ -51,14 +61,16 @@ class CallFuzzy:
         fc.distance.view()
         fc.speed.view()
 
-        # get speed 
-        speed = fc.count_speed(entered_distance)
-        # plot 
-##        self.view_variables(distance)
+        if entered_distance != None:
+            # get speed 
+            speed = fc.count_speed(entered_distance)
+            
+            # plot 
+            #self.view_variables(distance)
 
-        # view linguistic variables and counted values of distance and speed
-        fc.distance.view(sim=self.speed_simulation)
-        fc.speed.view(sim=self.speed_simulation)
+            # view linguistic variables and counted values of distance and speed
+            fc.distance.view(sim=fc.speed_simulation)
+            fc.speed.view(sim=fc.speed_simulation)
 
 
     def draw_plot(self, speed_axis, distance_axis):
@@ -67,11 +79,11 @@ class CallFuzzy:
         the rulebase of `FuzzyController` class. 
         """
         # plotting the points
-        plt.plot(speed_axis, distance_axis)
+        plt.plot(distance_axis, speed_axis)
         
         # naming the x axis and the y axis
-        plt.xlabel('Speed (km/h')
-        plt.ylabel('Distance (m)')
+        plt.xlabel('Distance (m)')
+        plt.ylabel('Speed (km/h')
         
         # giving a title to my graph 
         plt.title('Relationship between distance and speed')
@@ -121,6 +133,8 @@ class CallFuzzy:
 
         Variable `distance` is measured in meters, and `speed` is measured 
         in km/h.
+
+        :returns: floating point `distance`, floating point `speed`.
         """
 
         # get a distance 
@@ -142,4 +156,4 @@ class CallFuzzy:
         else:
             # count a speed with the help of fuzzy controller 
             speed = fc.count_speed(distance)
-            return 'Speed = ' + str(speed) + ' km/h'
+            return float(distance), float(speed)
