@@ -40,6 +40,10 @@ class PositionKF():
     # GET INITIAL DATA (only for 2D)
     def init2d(self):
         """
+        Allows to initialize parameters for 2D motion. 
+        """
+        
+        """
         # input initial data
         print('INPUT INITIAL DATA')
         truth_value_X = float(input('Truth value X: '))

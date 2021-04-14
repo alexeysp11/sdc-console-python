@@ -143,11 +143,21 @@ class Sensor():
             histograms = plt.figure()
             if (dim == 1 and sensor == 'gps') or (dim == 2 and sensor == 'gyro'): 
                 plt.hist(est_error, edgecolor = 'black')
+                plt.xlabel('Error (meters)')
+                plt.ylabel('Number of examples')
+                plt.title('Error histogram'.upper(), fontweight='bold')
             elif (dim == 2 and sensor == 'gps') or (dim == 3 and sensor == 'gyro'): 
-                hist_X = histograms.add_subplot(211)
+                histograms.suptitle('Error histograms'.upper(), fontweight='bold')
+
+                hist_X = histograms.add_subplot(121)
                 hist_X.hist(est_error[:,0], edgecolor = 'black')
-                hist_Y = histograms.add_subplot(212)
+                hist_X.set_ylabel('Number of examples')
+                hist_X.set_xlabel ('Error along X axis (meters)')
+
+                hist_Y = histograms.add_subplot(122)
                 hist_Y.hist(est_error[:,1], edgecolor = 'black')
+                hist_Y.set_ylabel ('Number of examples')
+                hist_Y.set_xlabel ('Error along Y axis (meters)')
 
             plt.show()
         

@@ -80,7 +80,7 @@ class Velocity:
                 velocity = init_velocity
                 time_sec = 60
 
-                print(f'Real coordinates (at the beggining): {init_pos}')
+                print(f'Real coordinates (at the beginning): {init_pos}')
                 print(f'Initial coordinates: {init_guess}')
                 print(f'Velocity_x: {velocity[0]} m/s')
                 print(f'Velocity_y: {velocity[1]} m/s')
