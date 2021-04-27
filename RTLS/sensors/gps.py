@@ -37,7 +37,7 @@ class GpsKF():
         Invokes Kalman filter for 1D and 2D and plots graphs.  
         """
         # usually error of GPS receiver is about 50 meters
-        abs_error = 50.0
+        abs_error = 10.0
         
         try:
             sensor = Sensor()

@@ -27,8 +27,8 @@ class KalmanFilter:
         apriori_est = np.ones(array_size) * observations[0]
         apriori_error = np.ones(array_size) * sigma
         kalman_gain = np.zeros(array_size)
-        mes_var = sigma**2 # estimate of measurement variance R 
-        process_var = np.ones(array_size) * sigma # process variance Q
+        mes_var = sigma**2                          # estimate of measurement variance R 
+        process_var = np.ones(array_size) * sigma   # process variance Q
         
         # intial guesses
         aposteri_est[0] = observations[0]
@@ -65,7 +65,11 @@ class KalmanFilter:
                     apriori_error[k] = aposteri_error[k-1] + process_var[k-1]
                 
                 # process_var should not be so large
-                process_var[k] = aposteri_error[k-1] / 2
+                #process_var[k] = aposteri_error[k-1] / 2
+
+                # add residuals to observations
+                v = observations[k] - apriori_est[k]
+                observations[k] = observations[k] + v
                 
                 # measurement update
                 kalman_gain[k] = apriori_error[k]/(apriori_error[k] + mes_var)
@@ -100,8 +104,12 @@ class KalmanFilter:
                     apriori_error[k, 1] = aposteri_error[k-1, 1] + process_var[k-1, 1]
             
                 # process_var should not be so large
-                process_var[k, 0] = aposteri_error[k-1, 0] / 2
-                process_var[k, 1] = aposteri_error[k-1, 1] / 2
+                #process_var[k, 0] = aposteri_error[k-1, 0] / 2
+                #process_var[k, 1] = aposteri_error[k-1, 1] / 2
+
+                # add residuals to observations
+                v = observations[k] - apriori_est[k]
+                observations[k] = observations[k] + v
                 
                 # measurement update
                 kalman_gain[k, 0] = apriori_error[k, 0]/(apriori_error[k, 0] + mes_var)
