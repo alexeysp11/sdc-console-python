@@ -4,6 +4,7 @@
 */*/__pycache__
 
 # Unfinished modules 
+image_recognition
 snippets
 tests
 
@@ -12,4 +13,4 @@ sensors/gyro.py
 sensors/accelerometer.py
 
 # Notes and Docs snippets
-Docs
+docs

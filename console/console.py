@@ -3,14 +3,17 @@ import sys                          # for exit.
 from .info import Info as info      # for Info class. 
 
 class Console: 
+    """
+    Gets data that user inputs into console. 
+    """
+
     def get_command():
         """
         Gets commands that user inputs into console. 
 
         Returns: 
 
-        `module`: what module should be invoked (GPS, IMU, fuzzy controller, 
-        neural networks etc). 
+        `module`: what module should be invoked (GPS, IMU, fuzzy controller etc). 
 
         `mode`: mode of a module (for example, constant speed, random 
         acceleration etc).
@@ -60,51 +63,6 @@ class Console:
                 
                 elif command == 'sdc gps --a':
                     return 'gps', 'a'
-                
-                elif command == 'sdc accel':
-                    invoke.accel()
-                
-                elif command == 'sdc gyro':
-                    info.gyro()
-
-                elif command == 'sdc gyro --const':
-                    #invoke.gyro(mode='c')
-                    pass
-                
-                elif command == 'sdc gyro --nu':
-                    #invoke.gyro(mode='nu')
-                    pass
-
-                elif command == 'sdc lidar':
-                    #invoke.lidar()
-                    pass
-                
-                elif command == 'sdc nn':
-                    info.neural_network()
-
-                elif command == 'sdc nn --mnist knn':
-                    #invoke.neural_network(mode='mnist', algorithm='knn')
-                    pass
-
-                elif command == 'sdc nn --mnist svm':
-                    #invoke.neural_network(mode='mnist', algorithm='svm')
-                    pass
-                
-                elif command == 'sdc nn --mnist lr':
-                    #invoke.neural_network(mode='mnist', algorithm='lr')
-                    pass
-
-                elif command == 'sdc nn --mnist mlp':
-                    #invoke.neural_network(mode='mnist', algorithm='mlp')
-                    pass
-
-                elif command == 'sdc nn --mnist compare':
-                    #invoke.neural_network(mode='mnist', algorithm='compare')
-                    pass
-                
-                elif command == 'sdc nn --signs':
-                    #invoke.neural_network(mode='signs', algorithm='svm')
-                    pass
                 
                 elif command == 'sdc fuzzy':
                     return 'fuzzy', '0'

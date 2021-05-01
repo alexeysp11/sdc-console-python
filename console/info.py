@@ -1,7 +1,3 @@
-"""
-Information module
-"""
-
 class Info: 
     """
     Allows to print out information about the application. 
@@ -49,18 +45,3 @@ All information modules can be called by:
     --v             | GPS (velocity)
     --a             | GPS (acceleration)
         ''')
-
-
-    def gyro():
-        print('''sdc gyro:
-    --const         | Gyroscope (constant angle)
-    --nu            | Gyroscope (non-uniform rotation) 
-        ''')
-
-
-    def neural_network():
-        print("""sdc nn:
-    --minst default | MNIST dataset of digits (default)
-    --minst custom  | MNIST dataset of digits (custom)
-    --signs         | Road signs
-        """)

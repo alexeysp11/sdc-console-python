@@ -4,15 +4,12 @@ sys.path.append('../console')
 sys.path.append('../physical_models')
 sys.path.append('../signal_processing')
 sys.path.append('../control_algorithms')
-sys.path.append('../computer_vision')
 
 from console.console import Console as console
 from physical_models.car import Car
 from signal_processing.imu_kf import ImuKF
 from signal_processing.gps_kf import GpsKF
 from control_algorithms.fuzzy_driver import FuzzyDriver
-#from MNIST.handwritten_digits import HandwrittenDigits
-#from road_signs import signs_default
 
 class Invoke: 
     """
@@ -84,37 +81,6 @@ class Invoke:
                     init_data = None
 
 
-    def neural_network(mode, algorithm):
-        try:
-            """
-            There is exception handling in if/else block too (programmer can set 
-            mode or defualt variables in the wrong way, and I don't know how to 
-            handle this exception not in if/else statement).
-            
-            So either watch carefully if the name of the file or the method 
-            changes or think out how to use try/except in this situation.
-            """
-            pass 
-            
-            """
-            if mode == 'mnist':
-                mnist_custom = HandwrittenDigits()
-                mnist_custom.run(algorithm)
-            
-            elif mode == 'signs':
-                signs_default.run()
-            
-            else:
-                print('Info for developer:'.upper())
-                print('''Incorrect mode or algorithm values in: 
-                neural_network(mode, algorithm) in invoke.py''')
-            """
-        
-        except Exception as e:
-            print('Exception: '.upper(), e)
-            traceback.print_tb(e.__traceback__)
-
-
     def fuzzy():
         try:
             fc = FuzzyDriver()
@@ -123,7 +89,3 @@ class Invoke:
         except Exception as e:
             print('Exception: '.upper(), e)
             traceback.print_tb(e.__traceback__)
-
-
-    def test():
-        pass

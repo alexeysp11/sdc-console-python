@@ -257,7 +257,7 @@ class Car:
         return truth_value
 
 
-    def define_accel(self, size, is_accel): 
+    def define_accel(self, size, is_rand): 
         """
         Assign an array of accelerations as random values from -1 to 1. 
         """
@@ -266,7 +266,7 @@ class Car:
         stop = 1
         time_sec = size[0]
         
-        if is_accel == True:
+        if is_rand == True:
             accel = np.zeros(size)
             for i in range(time_sec):
                 if size[1] == 1:
@@ -280,6 +280,7 @@ class Car:
             accel = np.zeros(size)
         
         return accel
+
 
     def redefine_velocity(self, init_velocity, accel, time):
         dt = 1
