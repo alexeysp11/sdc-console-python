@@ -1,10 +1,106 @@
-import traceback
+import sys, traceback
 import numpy as np
 from tabulate import tabulate
 import matplotlib.pyplot as plt
 
+sys.path.append('../sensors')
+sys.path.append('../math')
+
+from sensors.sensor import Sensor 
+from maths.kalman_filter import KalmanFilter 
+
+
 class SignalProcessingAlgorithm: 
-    def print_out(self, obs, est, init_data, table=True):
+    def gps_kf(self, dimension=1, init_data=0):
+        """
+        Invokes Kalman filter for 1D and 2D and plots graphs.  
+        """
+        
+        abs_error = 10.0
+        
+        try:
+            sensor = Sensor()
+            kf = KalmanFilter(error=abs_error)
+            
+            # generate GPS observations. 
+            obs, time = sensor.measure(init_data, abs_error=abs_error, unit='position')
+            
+            # estimate position using Kalman filter  
+            est = kf.estimate(obs)
+            
+            # print out results and plot all. 
+            self.mean, self.median, est_error = self.print_out(obs, est, 
+                init_data)
+            
+            self.plot(obs=obs, est=est, est_error=est_error, time=time,  
+                init_data=init_data, dim=dimension, sensor='gps')
+        
+        except Exception as e:
+            print('Exception: '.upper(), e)
+            traceback.print_tb(e.__traceback__)
+
+
+    def imu_kf(self, dimension=1, init_data=0):
+        """
+        Invokes Kalman filter for 1D and 2D and plots graphs.  
+        """
+
+        dt_gps = 1.0
+        dt_speed = 1.0
+        dt_accel = 1.0
+        gps_error = 50.0
+        
+        try:
+            sensor = Sensor()
+            kf = KalmanFilter(error=gps_error)
+            
+            # generate GPS observations. 
+            gps_obs, time = sensor.measure(init_data, abs_error=gps_error, unit='position', dt=dt_gps)
+            
+            # estimate position using GPS data
+            est_gps = kf.estimate(observations=gps_obs)
+            
+            # generate speedometer and accelerometer observations. 
+            speed_obs, time = sensor.measure(init_data, abs_error=0.1, unit='velocity', dt=dt_speed)
+            accel_obs, time = sensor.measure(init_data, abs_error=0.01, unit='acceleration', dt=dt_accel)
+
+            # correct postion observations
+            gps_rows = len(est_gps[:,0])
+            speed_rows = len(speed_obs[:,0])
+            accel_rows = len(accel_obs[:,0])
+            corrected_position = np.ones((accel_obs.shape))
+            k = 0
+            for i in range(gps_rows): 
+                for j in range(int(accel_rows/gps_rows)): 
+                    corrected_position[k] = est_gps[i]
+                    k += 1
+            k = 0
+            for i in range(speed_rows): 
+                for j in range(int(accel_rows/speed_rows)): 
+                    corrected_position[k] += speed_obs[i] * dt_speed
+                    k += 1
+            for i in range(accel_rows): 
+                corrected_position[i] += accel_obs[i] * dt_accel**2 / 2
+            
+            # estimate corrected position data
+            est = kf.estimate(observations=corrected_position)
+            
+            # print out results. 
+            self.mean, self.median, est_error = self.print_out(corrected_position, est, init_data, dt_accel)
+            
+            # plot results
+            self.plot(obs=corrected_position, est=est, est_error=est_error, 
+                time=time, init_data=init_data, dim=dimension, sensor='multisensor')
+        except Exception as e:
+            print('Exception: '.upper(), e)
+            traceback.print_tb(e.__traceback__)
+    
+
+    def state_observer():
+        pass 
+
+
+    def print_out(self, obs, est, init_data, dt=1.0, table=True):
         """
         Calculates and print out measures of central tendency (median, mean)
         and print them out. 
@@ -19,74 +115,80 @@ class SignalProcessingAlgorithm:
         """
 
         try:
-            truth_value = init_data[0]
+            init_value = init_data[0]
+            init_value = init_value[0]
             
             # reshape for a table (for 1D)
-            if type(truth_value) is float:
+            if type(init_value) is float:
                 obs = obs.reshape((len(obs), 1))
                 est = est.reshape((len(est), 1))
             
             # round values for printing out a table!
             obs = np.round(obs, 3)
             est = np.round(est, 3)
+
+            # assign truth value
+            truth_value = np.ones((est.shape))
+            k = 0
+            for i in range(len(init_value)):
+                for j in range(int(1/dt)):
+                    if i == len(init_value)-1 or j == int(1/dt)-1:
+                        truth_value[k] = init_value[i]
+                    elif j == int(1/dt): 
+                        truth_value[k] = init_value[i]
+                    else:
+                        truth_value[k] = init_value[i] + (init_value[i+1] - init_value[i]) * dt * j
+                    k += 1
             
             # calculate error of estimations
             error = np.round(truth_value - est, 3)
             
+            # make a table
             if table == True:
-                # making a table
                 if type(truth_value) == float: 
                     data = [[est, error, obs]]
-                    
                     headers = ['Estimations', 'Error', 'Observations']
-                    
                     print('\nDATA PROCESSING:')
                     print(tabulate(data, headers=headers))
-                
                 elif len(truth_value) <= 20:
                     data = [[truth_value, est, error, obs]]
-                    
                     headers = ['Truth value', 'Estimations', 'Error', 'Observations']
-                    
                     print('\nDATA PROCESSING:')
                     print(tabulate(data, headers=headers))
             
             # get number of columns
             cols = len(error[0,:])
             
-            # for 1D 
-            if cols == 1:
-                # calculate and print out measures of central tendency
+            # final info about algorithm accuracy
+            if cols == 1:   # for 1D 
+                # calculate measures of central tendency
                 median = np.round(np.median(abs(error)))
                 mean = np.round(np.mean(abs(error)))
+                # print out info 
                 print('Measures of central tendency of error:')
                 print(f'median = {median}, mean = {mean}')
-            
-            # for 2D 
-            if cols == 2: 
-                # calculate and print out measures of central tendency
+            if cols == 2:   # for 2D 
+                # calculate measures of central tendency
                 median_X = np.round(np.median(abs(error[:,0])), 3)
                 median_Y = np.round(np.median(abs(error[:,1])), 3)
                 mean_X = np.round(np.mean(abs(error[:,0])), 3)
                 mean_Y = np.round(np.mean(abs(error[:,1])), 3)
+                mean = np.array([[mean_X, mean_Y]])
+                median = np.array([[median_X, median_Y]])
+                # print out info
                 print('Measures of central tendency of error:')
                 print(f'median_X = {median_X}, mean_X = {mean_X}')
                 print(f'median_Y = {median_Y}, mean_Y = {mean_Y}')
-                
-                mean = np.array([[mean_X, mean_Y]])
-                median = np.array([[median_X, median_Y]])
-            
             print()
 
             return mean, median, error
-        
         except Exception as e:
             print('Exception: '.upper(), e)
             traceback.print_tb(e.__traceback__)
             return None, None
 
 
-    def plot(self, obs, est, est_error, init_data, dim, sensor, animation=False):
+    def plot(self, obs, est, est_error, time, init_data, dim, sensor, animation=False):
         """
         Responsible for visual representation of position estimation. 
 
@@ -98,7 +200,7 @@ class SignalProcessingAlgorithm:
         """
 
         # define labels of each axis for each sensor. 
-        if sensor == 'gps': 
+        if (sensor == 'gps' or sensor == 'multisensor'): 
             truth_label = 'truth value'
             ylabel = 'Position (meters)'
         if sensor == 'gyro': 
@@ -109,10 +211,24 @@ class SignalProcessingAlgorithm:
         # distribution. 
         try:
             fig = plt.figure()
+            init_value = init_data[0]
+            init_value = init_value[0]
+            dt = time[1] - time[0]
+
+            # assign truth value
+            truth_value = np.ones((est.shape))
+            k = 0
+            for i in range(len(init_value)):
+                for j in range(int(1/dt)):
+                    if i == len(init_value)-1 or j == int(1/dt)-1:
+                        truth_value[k] = init_value[i]
+                    elif j == int(1/dt): 
+                        truth_value[k] = init_value[i]
+                    else:
+                        truth_value[k] = init_value[i] + (init_value[i+1] - init_value[i]) * dt * j
+                    k += 1
             
-            truth_value = init_data[0]
-            
-            if (dim == 1 and sensor == 'gps') or (dim == 2 and sensor == 'gyro'): 
+            if (dim == 1 and (sensor == 'gps' or sensor == 'multisensor')) or (dim == 2 and sensor == 'gyro'): 
                 plt.plot(obs,'k+', label='noisy measurements')
                 plt.plot(est,'b-', label='a posteri estimate')
                 
@@ -127,7 +243,7 @@ class SignalProcessingAlgorithm:
                 plt.ylabel(ylabel)
                 plt.grid()
             
-            if (dim == 2 and sensor == 'gps') or (dim == 3 and sensor == 'gyro'): 
+            if (dim == 2 and (sensor == 'gps' or sensor == 'multisensor')) or (dim == 3 and sensor == 'gyro'): 
                 """
                 In order to drawing plots for 2d space location estimating, we plot: 
                 1) 2 diagrams of Estimation vs Data with respect to each 
@@ -174,31 +290,31 @@ class SignalProcessingAlgorithm:
                 
                 # diagram with respect to X
                 pos_X = fig.add_subplot(222)
-                pos_X.plot(obs[:,0],'k+')
-                pos_X.plot(est[:,0],'b-')
-                pos_X.plot(truth_value[:,0], color='g')
+                pos_X.plot(time, obs[:,0],'k+')
+                pos_X.plot(time, est[:,0],'b-')
+                pos_X.plot(time, truth_value[:,0], color='g')
                 plt.title(f'{sensor} data processing'.upper(), fontweight='bold')
                 plt.ylabel('Position X (meters)')
                 plt.grid()
                 
                 # diagram with respect to Y
                 pos_Y = fig.add_subplot(224)
-                pos_Y.plot(obs[:,1],'k+')
-                pos_Y.plot(est[:,1],'b-')
-                pos_Y.plot(truth_value[:,1], color='g')
+                pos_Y.plot(time, obs[:,1],'k+')
+                pos_Y.plot(time, est[:,1],'b-')
+                pos_Y.plot(time, truth_value[:,1], color='g')
                 plt.xlabel('Time (seconds)')
                 plt.ylabel('Position Y (meters)')
                 plt.grid()
 
             # histograms of error distribution. 
             histograms = plt.figure()
-            if (dim == 1 and sensor == 'gps') or (dim == 2 and sensor == 'gyro'): 
+            if (dim == 1 and (sensor == 'gps' or sensor == 'multisensor')) or (dim == 2 and sensor == 'gyro'): 
                 plt.hist(est_error, edgecolor = 'black')
                 plt.xlabel('Error (meters)')
                 plt.ylabel('Number of examples')
-                plt.title('Error histogram'.upper(), fontweight='bold')
-            elif (dim == 2 and sensor == 'gps') or (dim == 3 and sensor == 'gyro'): 
-                histograms.suptitle('Error histograms'.upper(), fontweight='bold')
+                plt.title(f'Error histogram ({sensor})'.upper(), fontweight='bold')
+            elif (dim == 2 and (sensor == 'gps' or sensor == 'multisensor')) or (dim == 3 and sensor == 'gyro'): 
+                histograms.suptitle(f'Error histograms ({sensor})'.upper(), fontweight='bold')
 
                 hist_X = histograms.add_subplot(121)
                 hist_X.hist(est_error[:,0], edgecolor = 'black')
@@ -209,9 +325,7 @@ class SignalProcessingAlgorithm:
                 hist_Y.hist(est_error[:,1], edgecolor = 'black')
                 hist_Y.set_ylabel ('Number of examples')
                 hist_Y.set_xlabel ('Error along Y axis (meters)')
-
             plt.show()
-        
         except Exception as e:
             print('Exception: '.upper(), e)
             traceback.print_tb(e.__traceback__)

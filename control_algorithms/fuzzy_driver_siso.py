@@ -2,11 +2,11 @@ import sys, traceback
 
 sys.path.append('../maths')
 
-from maths.fuzzy_controller import FuzzyController
+from maths.fc_siso import FcSiso as FuzzyController
 import matplotlib.pyplot as plt
 
 
-class FuzzyDriver:
+class FuzzyDriverSiso:
     """
     This class allows you to configure interaction with `FuzzyController` class 
     from the console application. 
@@ -22,7 +22,6 @@ class FuzzyDriver:
 
         # Declare instances of considered classes
         fc = FuzzyController()
-        self = FuzzyDriver()
         
         print("""Select one of these options:
             1) Enter distance and get speed once, 
@@ -87,10 +86,12 @@ class FuzzyDriver:
         
         # naming the x axis and the y axis
         plt.xlabel('Distance (m)')
-        plt.ylabel('Speed (km/h')
+        plt.ylabel('Speed (km/h)')
         
         # giving a title to my graph 
-        plt.title('Relationship between distance and speed')
+        plt.title('Distance vs speed')
+
+        plt.grid()
         
         # function to show the plot 
         plt.show() 

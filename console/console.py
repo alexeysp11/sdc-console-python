@@ -28,51 +28,35 @@ class Console:
                 # ignore if user just pressed Enter
                 if command == '':
                     pass
-                
                 elif command == 'sdc':
                     info.help()
                     info.commands()
-
                 elif command == 'sdc -commands':
                     info.commands()
-                
                 elif command == 'sdc -h' or command == 'sdc -help':
                     info.help()
-                
                 elif command == 'sdc imu':
                     info.imu()
-                
                 elif command == 'sdc imu --p':
                     return 'imu', 'p'
-
                 elif command == 'sdc imu --v':
                     return 'imu', 'v'
-                
                 elif command == 'sdc imu --a':
                     return 'imu', 'a'
-
                 elif command == 'sdc gps':
                     info.gps()
-
                 elif command == 'sdc gps --p':
                     return 'gps', 'p'
-
                 elif command == 'sdc gps --v':
                     return 'gps', 'v'
-                    invoke.gps(mode='v')
-                
                 elif command == 'sdc gps --a':
                     return 'gps', 'a'
-                
                 elif command == 'sdc fuzzy':
                     return 'fuzzy', '0'
-
                 elif command == 'sdc exit':
                     sys.exit()
-                
                 else:
                     print('Incorrect command!')
-            
             except Exception as e:
                 print('Info for developer:'.upper)
                 print(e)
@@ -93,16 +77,36 @@ class Console:
 
         while(True):
             is_default = input('Default parameters? ')
-
             try:
                 if is_default == 'y' or is_default == 'yes': 
                     return True
-                
                 elif is_default == 'n' or is_default == 'no':
                     return False
-                
             except Exception as e:
                 print('Exception: '.upper(), e)
                 traceback.print_tb(e.__traceback__)
-        
-        return init_data
+
+
+    def is_miso_fuzzy(): 
+        """
+        Asks user if fuzzy controller should be MISO. 
+
+        Returns: 
+
+        `True`: if fuzzy controller should be MISO. 
+
+        `False`: if fuzzy controller should be SISO. 
+        """
+
+        print('Fuzzy controller module'.upper())
+
+        while(True):
+            is_default = input('MISO fuzzy controller? ')
+            try:
+                if is_default == 'y' or is_default == 'yes': 
+                    return True
+                elif is_default == 'n' or is_default == 'no':
+                    return False
+            except Exception as e:
+                print('Exception: '.upper(), e)
+                traceback.print_tb(e.__traceback__)

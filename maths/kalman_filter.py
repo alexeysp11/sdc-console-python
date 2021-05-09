@@ -6,18 +6,15 @@ class KalmanFilter:
     when it's changing motion pattern.  
     """
 
-    def __init__(self, observations, error):
-        self.observations = observations
+    def __init__(self, error):
         self.error = error
 
-    def estimate(self):
+    def estimate(self, observations):
         # initial parameters 
-        observations = self.observations
         abs_error = self.error
-        
         time_sec = len(observations)
         array_size = observations.shape
-        sigma = abs_error * 2 
+        sigma = abs_error / 2 
         
         # allocate space for arrays
         aposteri_est = np.ones(array_size) * observations[0]
@@ -35,13 +32,13 @@ class KalmanFilter:
         # etimate location for every iteration
         for k in range(1, time_sec):
             # time update
-            apriori_est[k] = aposteri_est[k-1] # here you can add accelerometer and tachometer data (apriori_est[k] = aposteri_est[k-1] + tachometer*dt + 1/2*accelerometer * dt**2). 
+            apriori_est[k] = aposteri_est[k-1] 
             
             # get number of columns
+            #print(f'aposteri_error.shape: {aposteri_error.shape}')
             cols = len(aposteri_error[0,:])
             
-            # for 1D space
-            if cols == 1:
+            if cols == 1:   # for 1D space
                 if k != 1 and (aposteri_error[k-1] < aposteri_error[k-2]): 
                     apriori_error[k] = aposteri_error[k-1] - process_var[k-1]
                 else: 
@@ -55,9 +52,7 @@ class KalmanFilter:
                 kalman_gain[k] = apriori_error[k]/(apriori_error[k] + mes_var)
                 aposteri_est[k] = apriori_est[k] + kalman_gain[k]*(observations[k] - apriori_est[k])
                 aposteri_error[k] = (1 - kalman_gain[k]) * apriori_error[k]
-            
-            # for 2D space 
-            if cols == 2:
+            if cols == 2:   # for 2D space 
                 if k != 1:
                     # X axis
                     if (aposteri_error[k-1, 0] < aposteri_error[k-2, 0]): 
@@ -70,7 +65,6 @@ class KalmanFilter:
                         apriori_error[k, 1] = aposteri_error[k-1, 1] - process_var[k-1, 1]
                     else: 
                         apriori_error[k, 1] = aposteri_error[k-1, 1] + process_var[k-1, 1]
-                
                 else: 
                     apriori_error[k, 0] = aposteri_error[k-1, 0] + process_var[k-1, 0]
                     apriori_error[k, 1] = aposteri_error[k-1, 1] + process_var[k-1, 1]

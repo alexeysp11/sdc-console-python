@@ -3,7 +3,7 @@ import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
 
-class FuzzyController:
+class FcSiso:
     """
     This class takes in `distance` as an input and returns `speed` as an output. 
     """

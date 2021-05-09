@@ -3,7 +3,7 @@ import random
 
 class Car: 
     def initialize(self, dimension=1, init_velocity=0.0, mode='p', 
-        is_accel=False, is_mock=True):
+        is_accel=False, is_default=True):
         """
         Initializes state of a car (position, velocity, acceleration) and initial
         guesses about where a car is located. 
@@ -16,7 +16,7 @@ class Car:
 
         if dimension == 1: 
             # if we use default values
-            if is_mock == True:
+            if is_default == True:
                 init_pos = 45.0
                 init_guess = 55.0
                 velocity = init_velocity
@@ -49,9 +49,8 @@ class Car:
                     except Exception as e:
                         print('Exception: '.upper(), e)
                 
-                # if the car doesn't stay (e.g. it moves)
+                # assign velocity. 
                 if mode != 'p':
-                    # input velocity
                     while (True):
                         try:
                             velocity = float(input('Velocity (m/s): '))
@@ -59,8 +58,6 @@ class Car:
                                 break
                         except Exception as e:
                             print('Exception: '.upper(), e)
-                
-                # if the car stays (e.g. it doesn't moves)
                 else: 
                     velocity = 0.0
                     print(f'Velocity (m/s): {velocity}')
@@ -74,11 +71,11 @@ class Car:
                     except Exception as e:
                         print('Exception: '.upper(), e)
 
-            truth_value = self.count_position(init_pos, velocity, is_accel, time_sec)
+            truth_value, velocity, accel = self.count_position(init_pos, velocity, is_accel, time_sec)
         
         if dimension == 2: 
             # if we use default values
-            if is_mock == True:
+            if is_default == True:
                 init_pos = (163.0, 55.0)
                 init_guess = (152.0, 68.0)
                 velocity = init_velocity
@@ -170,9 +167,9 @@ class Car:
                 init_pos = (truth_value_X, truth_value_Y)
                 init_guess = (init_guess_X, init_guess_Y)
             
-            truth_value = self.count_position(init_pos, velocity, is_accel, time_sec)
+            truth_value, velocity, accel = self.count_position(init_pos, velocity, is_accel, time_sec)
         
-        return (truth_value, init_guess, time_sec)
+        return [truth_value, velocity, accel], init_guess, time_sec
 
 
     def default_velocity(self, mode, dim): 
@@ -239,13 +236,15 @@ class Car:
             truth_value[0, 0] = init_pos[0]
             truth_value[0, 1] = init_pos[1]
         
-        # assign acceleration array. 
-        accel = self.define_accel(size, is_accel)
+        # assign arrays of speed and accel. 
+        velocity_array = np.ones((time_sec,1))  * velocity
+        accel = self.define_accel(size, is_accel) 
 
         # determine truth_value (truth position). 
         for sec in range(1, time_sec): 
             # redefine current velocity with following formula: v = at. 
             velocity = self.redefine_velocity(velocity, accel[sec], sec)
+            velocity_array[sec] = velocity
             
             # get current position
             if type(init_pos) == float:     # if 1D. 
@@ -254,7 +253,7 @@ class Car:
                 truth_value[sec, 0] = truth_value[sec-1, 0] + (velocity[0] * dt) + (accel[sec, 0] * dt**2) / 2
                 truth_value[sec, 1] = truth_value[sec-1, 1] + (velocity[1] * dt) + (accel[sec, 1] * dt**2) / 2
         
-        return truth_value
+        return truth_value, velocity_array, accel
 
 
     def define_accel(self, size, is_rand): 
