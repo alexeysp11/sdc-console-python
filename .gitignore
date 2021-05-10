@@ -8,9 +8,6 @@ image_recognition
 snippets
 tests
 
-# docs 
-README.md
-
 # Unfinished files
 sensors/gyro.py
 sensors/accelerometer.py
