@@ -9,13 +9,8 @@ snippets
 tests
 
 # docs 
-docs 
 README.md
 
 # Unfinished files
 sensors/gyro.py
 sensors/accelerometer.py
-
-# 
-signal_processing/gps_kf.py
-signal_processing/imu_kf.py
