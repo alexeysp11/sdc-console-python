@@ -1,10 +1,12 @@
 # sdc-console-python
 
+Read this in other languages: [English](README.md), [Russian/Русский](README.ru.md). 
+
 `sdc-console-python` allows you to use **Kalman Filter** to process data from *GPS*, *speedometer* and *accelerometer* in order to estimate vehicle position. 
 
 In addition, this app includes **fuzzy controller** module that allows you to calculate *desired speed* of a car. 
 
-[Here](docs/design.md) you can read about the application's design. 
+[Click here](docs/design.md) to read about the application's design. 
 
 ## How to use  
 
@@ -211,6 +213,10 @@ The result of the **Kalman filter** for processing the data of the GPS receiver 
 
 ![gps-a](docs/img/usage/gps-a.png)
 
-The result of the **fuzzy controller** is shown below:
+The result of the **one variable fuzzy controller** is shown below:
+
+![fuzzy-graph](docs/img/usage/fuzzy-graph.png)
+
+The result of the **three variables fuzzy controller** is shown below:
 
 ![fuzzy-graph-miso](docs/img/usage/fuzzy-graph-miso.png)
