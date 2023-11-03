@@ -1,12 +1,26 @@
 # sdc-console-python
 
-Read this in other languages: [English](README.md), [Russian/Русский](README.ru.md). 
+[English](README.md) | [Русский](README.ru.md)
+
+The `sdc-console-python` project is a python-based application that utilizes Kalman Filter to process data from GPS, speedometer, and accelerometer sensors to estimate the position of a vehicle. 
+The app also includes a fuzzy controller module that calculates the desired speed of the car.
+
+## Description 
 
 `sdc-console-python` allows you to use **Kalman Filter** to process data from *GPS*, *speedometer* and *accelerometer* in order to estimate vehicle position. 
 
 In addition, this app includes **fuzzy controller** module that allows you to calculate *desired speed* of a car. 
 
 [Click here](docs/design.md) to read about the application's design. 
+
+### Goals 
+
+The main goal of the project is to provide an efficient and accurate way of estimating a vehicle's position using various sensors. Additionally, the fuzzy controller module helps in determining the desired speed of the car, which can be useful in various applications.
+
+### Scope
+
+The scope of the project is focused on processing data from GPS, speedometer, and accelerometer sensors and utilizing Kalman Filter to estimate vehicle position. 
+The fuzzy controller module is an additional feature that enhances the functionality of the application.
 
 ## How to use  
 
